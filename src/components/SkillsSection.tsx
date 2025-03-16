@@ -35,13 +35,21 @@ export function SkillsSection() {
 
   const handleBasicSkillChange = (index: number, field: keyof Skill, value: string | number) => {
     const newSkills = [...basicSkills];
-    newSkills[index][field] = value;
+    if (field === 'steigerung') {
+      newSkills[index][field] = Number(value);
+    } else {
+      newSkills[index][field] = value as any;
+    }
     setBasicSkills(newSkills);
   };
 
   const handleAdvancedSkillChange = (index: number, field: keyof Skill, value: string | number) => {
     const newSkills = [...advancedSkills];
-    newSkills[index][field] = value;
+    if (field === 'steigerung') {
+      newSkills[index][field] = Number(value);
+    } else {
+      newSkills[index][field] = value as any;
+    }
     setAdvancedSkills(newSkills);
   };
 

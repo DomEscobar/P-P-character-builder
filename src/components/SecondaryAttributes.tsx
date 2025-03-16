@@ -128,7 +128,7 @@ export function SecondaryAttributes() {
           </div>
           <div className="space-y-2">
             <CardTitle className="text-[#d4af37] text-sm flex items-center mt-2">
-              <Footprints size={16} className="mr-2" />
+              <ArrowRight size={16} className="mr-2" />
               Bewegung
             </CardTitle>
             <div className="grid grid-cols-3 gap-3">
