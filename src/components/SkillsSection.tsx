@@ -8,9 +8,11 @@ import type { Skill } from "@/context/CharacterContext";
 import { SkillItem } from "./skills/SkillItem";
 import { SkillEditDialog } from "./skills/SkillEditDialog";
 import { calculateWert } from "@/utils/skillUtils";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export function SkillsSection() {
   const { skills, addSkill, updateSkill, deleteSkill, stats } = useCharacter();
+  const isMobile = useIsMobile();
 
   const [selectedSkill, setSelectedSkill] = useState<Skill | null>(null);
   const [openDialog, setOpenDialog] = useState(false);
@@ -72,14 +74,14 @@ export function SkillsSection() {
         <CardTitle className="text-[#4e3c10] font-serif text-lg">Fähigkeiten</CardTitle>
         <Button 
           onClick={handleAddSkill}
-          size="sm"
+          size={isMobile ? "sm" : "default"}
           className="bg-[#8b7339] hover:bg-[#6b592b] text-[#f5e8c8] h-7 text-xs"
         >
           <Plus size={14} className="mr-1" /> Hinzufügen
         </Button>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
           {skills.map((skill) => (
             <SkillItem 
               key={skill.id} 

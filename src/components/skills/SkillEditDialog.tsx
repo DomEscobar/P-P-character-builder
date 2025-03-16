@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import type { Skill } from "@/context/CharacterContext";
 import { Stat } from "@/components/CharacterStats";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface SkillEditDialogProps {
   open: boolean;
@@ -30,6 +31,8 @@ export function SkillEditDialog({
   stats,
   calculateWert
 }: SkillEditDialogProps) {
+  const isMobile = useIsMobile();
+  
   // Get character stats to use in the dropdown
   const getCharacterStatOptions = (stats: Stat[]) => {
     return stats.map(stat => ({
@@ -41,39 +44,39 @@ export function SkillEditDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-[#262222] border-[#473b3b] text-[#e0d0b0]">
+      <DialogContent className={`bg-[#f5e8c8] border-[#d8c38d] text-[#4e3c10] ${isMobile ? 'p-3 max-w-[90vw]' : 'p-6'}`}>
         <DialogHeader>
-          <DialogTitle className="text-[#d4af37]">
+          <DialogTitle className="text-[#8b7339] font-serif">
             {selectedSkill?.name ? `${selectedSkill.name} bearbeiten` : "Neue Fähigkeit"}
           </DialogTitle>
         </DialogHeader>
         
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-1 gap-4">
-            <div className="flex flex-col space-y-2">
-              <label className="text-sm text-[#c0b090]">Name</label>
+        <div className={`grid gap-3 py-2 ${isMobile ? 'text-sm' : ''}`}>
+          <div className="grid grid-cols-1 gap-3">
+            <div className="flex flex-col space-y-1">
+              <label className="font-medium text-[#6b592b]">Name</label>
               <Input
                 value={editValues.name}
                 onChange={(e) => setEditValues({ ...editValues, name: e.target.value })}
-                className="bg-[#332d2d] border-[#473b3b] text-[#e0d0b0]"
+                className="bg-[#fff] border-[#d8c38d] text-[#4e3c10]"
               />
             </div>
             
-            <div className="flex flex-col space-y-2">
-              <label className="text-sm text-[#c0b090]">Spielwert</label>
+            <div className="flex flex-col space-y-1">
+              <label className="font-medium text-[#6b592b]">Spielwert</label>
               <Select 
                 value={editValues.spielwert}
                 onValueChange={(value) => setEditValues({ ...editValues, spielwert: value })}
               >
-                <SelectTrigger className="bg-[#332d2d] border-[#473b3b] text-[#e0d0b0]">
+                <SelectTrigger className={`bg-[#fff] border-[#d8c38d] text-[#4e3c10] ${isMobile ? 'h-8 text-sm' : ''}`}>
                   <SelectValue placeholder="Wähle einen Spielwert" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#262222] border-[#473b3b] text-[#e0d0b0]">
+                <SelectContent className="bg-[#f5e8c8] border-[#d8c38d] text-[#4e3c10] max-h-[40vh]">
                   {getCharacterStatOptions(stats).map(option => (
                     <SelectItem 
                       key={option.value} 
                       value={option.value}
-                      className="text-[#e0d0b0] focus:bg-[#473b3b] focus:text-[#d4af37]"
+                      className={`text-[#4e3c10] focus:bg-[#e2cc9c] focus:text-[#4e3c10] ${isMobile ? 'text-sm py-1' : ''}`}
                     >
                       {option.label}
                     </SelectItem>
@@ -82,19 +85,19 @@ export function SkillEditDialog({
               </Select>
             </div>
             
-            <div className="flex flex-col space-y-2">
-              <label className="text-sm text-[#c0b090]">Steigerung</label>
+            <div className="flex flex-col space-y-1">
+              <label className="font-medium text-[#6b592b]">Steigerung</label>
               <Input
                 type="number"
                 value={editValues.steigerung}
                 onChange={(e) => setEditValues({ ...editValues, steigerung: Number(e.target.value) })}
-                className="bg-[#332d2d] border-[#473b3b] text-[#e0d0b0]"
+                className="bg-[#fff] border-[#d8c38d] text-[#4e3c10]"
               />
             </div>
             
-            <div className="flex flex-col space-y-2">
-              <label className="text-sm text-[#c0b090]">Wert (Spielwert + Steigerung)</label>
-              <div className="bg-[#332d2d] border border-[#473b3b] text-[#e0d0b0] rounded-md px-3 py-2 h-10">
+            <div className="flex flex-col space-y-1">
+              <label className="font-medium text-[#6b592b]">Wert (Spielwert + Steigerung)</label>
+              <div className="bg-[#e2cc9c] border border-[#d8c38d] text-[#4e3c10] rounded-md px-3 py-1 flex items-center justify-center font-bold">
                 {editValues.spielwert 
                   ? calculateWert({ spielwert: editValues.spielwert, steigerung: editValues.steigerung })
                   : "—"}
@@ -103,26 +106,29 @@ export function SkillEditDialog({
           </div>
         </div>
         
-        <DialogFooter className="flex justify-between">
+        <DialogFooter className={`flex ${isMobile ? 'flex-col space-y-2' : 'justify-between'} mt-2`}>
           {selectedSkill && selectedSkill.name && (
             <Button 
               onClick={onDelete}
-              className="bg-red-800 hover:bg-red-700 text-white"
+              size={isMobile ? "sm" : "default"}
+              className="bg-[#8b3939] hover:bg-[#722e2e] text-[#f5e8c8]"
             >
               Löschen
             </Button>
           )}
           
-          <div className="flex space-x-2">
+          <div className={`flex ${isMobile ? 'justify-end space-x-2 w-full' : 'space-x-2'}`}>
             <Button 
               onClick={() => onOpenChange(false)}
-              className="bg-[#332d2d] hover:bg-[#473b3b] text-[#e0d0b0]"
+              size={isMobile ? "sm" : "default"}
+              className="bg-[#6b592b] hover:bg-[#4e3c10] text-[#f5e8c8]"
             >
               Abbrechen
             </Button>
             <Button 
               onClick={onSave}
-              className="bg-[#d4af37] hover:bg-[#c09a20] text-[#262222]"
+              size={isMobile ? "sm" : "default"}
+              className="bg-[#8b7339] hover:bg-[#6b592b] text-[#f5e8c8]"
             >
               Speichern
             </Button>
