@@ -2,7 +2,6 @@
 import React from "react";
 import type { Skill } from "@/types/character";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { ScrollText } from "lucide-react";
 
 interface SkillItemProps {
   skill: Skill;
@@ -13,35 +12,55 @@ interface SkillItemProps {
 export function SkillItem({ skill, wert, onEdit }: SkillItemProps) {
   const isMobile = useIsMobile();
   
+  const calculateStrokeWidth = (value: number) => {
+    return value > 0 ? (isMobile ? 8 : 10) : (isMobile ? 4 : 5);
+  };
+
+  const getStrokeDashArray = (value: number) => {
+    return `${value > 0 ? (value / 100) * 251.2 : 0} 251.2`;
+  };
+
+  const size = isMobile ? "w-16 h-16" : "w-24 h-24";
+  const fontSize = isMobile ? "text-xl" : "text-3xl";
+  const labelSize = isMobile ? "text-xs" : "text-sm";
+
   return (
     <div 
-      className="relative flex flex-col items-center cursor-pointer transition-all hover:scale-105 mb-4"
+      className="flex flex-col items-center cursor-pointer transition-transform hover:scale-105"
       onClick={() => onEdit(skill)}
     >
-      <div className={`${isMobile ? 'w-16 h-16' : 'w-24 h-24'} relative`}>
-        {/* Parchment background */}
-        <div className="absolute inset-0 bg-[#f5e8c8] rounded-full border-2 border-[#d8c38d] shadow-md"></div>
+      <div className={`relative flex items-center justify-center ${size} mb-1 md:mb-2`}>
+        <svg className="absolute" width="100%" height="100%" viewBox="0 0 100 100">
+          <circle
+            cx="50"
+            cy="50"
+            r="40"
+            fill="none"
+            stroke="#3a3333"
+            strokeWidth={isMobile ? "8" : "10"}
+          />
+        </svg>
         
-        {/* Decorative border */}
-        <div 
-          className="absolute inset-0 rounded-full border-4 border-[#d4af37] opacity-60"
-          style={{
-            clipPath: `polygon(0% 0%, ${wert}% 0%, ${wert}% 100%, 0% 100%)`
-          }}
-        ></div>
+        <svg className="absolute transform -rotate-90" width="100%" height="100%" viewBox="0 0 100 100">
+          <circle
+            cx="50"
+            cy="50"
+            r="40"
+            fill="none"
+            stroke="#d4af37"
+            strokeWidth={calculateStrokeWidth(wert)}
+            strokeDasharray={getStrokeDashArray(wert)}
+            strokeLinecap="round"
+          />
+        </svg>
         
-        {/* Skill value */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-serif font-bold text-[#8b7339]`}>
-            {wert}
-          </span>
+        <div className={`z-10 ${fontSize} font-bold text-white`}>
+          {wert}
         </div>
       </div>
       
-      {/* Skill name */}
-      <div className="relative mt-1 px-3 py-1 bg-[#3a3333] rounded-lg border border-[#d4af37] w-full max-w-[90%]">
-        <ScrollText className="absolute left-1 top-1/2 -translate-y-1/2 text-[#d4af37]" size={isMobile ? 10 : 12} />
-        <span className={`${isMobile ? 'text-xs pl-3' : 'text-sm pl-4'} font-serif font-medium text-[#d4af37] truncate block text-center`}>
+      <div className="flex items-center justify-center bg-[#3a3333] px-2 py-0.5 md:px-4 md:py-1 rounded-full">
+        <span className={`${labelSize} font-medium text-[#d4af37] truncate max-w-full`}>
           {skill.name}
         </span>
       </div>
