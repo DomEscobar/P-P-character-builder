@@ -1,12 +1,15 @@
+
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { User, Scroll, Users, Sword } from "lucide-react";
 import { useCharacter } from "@/context/CharacterContext";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export function CharacterHeader() {
   const { profile, updateProfile } = useCharacter();
+  const isMobile = useIsMobile();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateProfile({
@@ -15,9 +18,9 @@ export function CharacterHeader() {
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex justify-center mb-4">
-        <div className="h-24 w-24 bg-[#3a3333] rounded-full flex justify-center items-center border-2 border-[#d4af37]">
+    <div className="space-y-3 md:space-y-4">
+      <div className="flex justify-center mb-2 md:mb-4">
+        <div className="h-16 w-16 md:h-24 md:w-24 bg-[#3a3333] rounded-full flex justify-center items-center border-2 border-[#d4af37]">
           {profile.portrait ? (
             <img 
               src={profile.portrait} 
@@ -25,7 +28,7 @@ export function CharacterHeader() {
               className="h-full w-full object-cover rounded-full"
             />
           ) : (
-            <User className="h-12 w-12 text-[#d4af37]" />
+            <User className="h-8 w-8 md:h-12 md:w-12 text-[#d4af37]" />
           )}
         </div>
       </div>
@@ -40,7 +43,7 @@ export function CharacterHeader() {
         <CarouselContent>
           <CarouselItem className="basis-4/5 md:basis-1/3">
             <CharacterInfoCard 
-              icon={<User className="h-5 w-5" />}
+              icon={<User className="h-4 w-4 md:h-5 md:w-5" />}
               label="Name"
               name="name"
               value={profile.name}
@@ -50,7 +53,7 @@ export function CharacterHeader() {
           </CarouselItem>
           <CarouselItem className="basis-4/5 md:basis-1/3">
             <CharacterInfoCard 
-              icon={<Users className="h-5 w-5" />}
+              icon={<Users className="h-4 w-4 md:h-5 md:w-5" />}
               label="Volk"
               name="volk"
               value={profile.volk}
@@ -60,7 +63,7 @@ export function CharacterHeader() {
           </CarouselItem>
           <CarouselItem className="basis-4/5 md:basis-1/3">
             <CharacterInfoCard 
-              icon={<Sword className="h-5 w-5" />}
+              icon={<Sword className="h-4 w-4 md:h-5 md:w-5" />}
               label="Klasse"
               name="klasse"
               value={profile.klasse}
@@ -70,7 +73,7 @@ export function CharacterHeader() {
           </CarouselItem>
           <CarouselItem className="basis-4/5 md:basis-1/3">
             <CharacterInfoCard 
-              icon={<Scroll className="h-5 w-5" />}
+              icon={<Scroll className="h-4 w-4 md:h-5 md:w-5" />}
               label="Karriere"
               name="karriere"
               value={profile.karriere}
@@ -99,12 +102,14 @@ function CharacterInfoCard({
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
 }) {
+  const isMobile = useIsMobile();
+  
   return (
     <Card className="bg-[#332d2d] border-[#473b3b]">
-      <CardContent className="p-4">
-        <div className="flex items-center gap-2 mb-2">
+      <CardContent className="p-2 md:p-4">
+        <div className="flex items-center gap-1 md:gap-2 mb-1 md:mb-2">
           {icon}
-          <Label htmlFor={name} className="text-[#d4af37]">{label}</Label>
+          <Label htmlFor={name} className="text-[#d4af37] text-xs md:text-sm">{label}</Label>
         </div>
         <Input
           id={name}
@@ -112,7 +117,7 @@ function CharacterInfoCard({
           value={value}
           onChange={onChange}
           placeholder={placeholder}
-          className="bg-[#262222] border-[#473b3b] text-[#e0d0b0] focus-visible:ring-[#d4af37]"
+          className="bg-[#262222] border-[#473b3b] text-[#e0d0b0] focus-visible:ring-[#d4af37] h-8 md:h-10 text-xs md:text-sm"
         />
       </CardContent>
     </Card>

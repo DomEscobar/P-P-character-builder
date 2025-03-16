@@ -1,6 +1,7 @@
 
 import React from "react";
-import type { Skill } from "@/context/CharacterContext";
+import type { Skill } from "@/types/character";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface SkillItemProps {
   skill: Skill;
@@ -9,20 +10,26 @@ interface SkillItemProps {
 }
 
 export function SkillItem({ skill, wert, onEdit }: SkillItemProps) {
+  const isMobile = useIsMobile();
+  
   const calculateStrokeWidth = (value: number) => {
-    return value > 0 ? 10 : 5;
+    return value > 0 ? (isMobile ? 8 : 10) : (isMobile ? 4 : 5);
   };
 
   const getStrokeDashArray = (value: number) => {
     return `${value > 0 ? (value / 100) * 251.2 : 0} 251.2`;
   };
 
+  const size = isMobile ? "w-16 h-16" : "w-24 h-24";
+  const fontSize = isMobile ? "text-xl" : "text-3xl";
+  const labelSize = isMobile ? "text-xs" : "text-sm";
+
   return (
     <div 
       className="flex flex-col items-center cursor-pointer transition-transform hover:scale-105"
       onClick={() => onEdit(skill)}
     >
-      <div className="relative flex items-center justify-center w-24 h-24 mb-2">
+      <div className={`relative flex items-center justify-center ${size} mb-1 md:mb-2`}>
         <svg className="absolute" width="100%" height="100%" viewBox="0 0 100 100">
           <circle
             cx="50"
@@ -30,7 +37,7 @@ export function SkillItem({ skill, wert, onEdit }: SkillItemProps) {
             r="40"
             fill="none"
             stroke="#3a3333"
-            strokeWidth="10"
+            strokeWidth={isMobile ? "8" : "10"}
           />
         </svg>
         
@@ -47,13 +54,15 @@ export function SkillItem({ skill, wert, onEdit }: SkillItemProps) {
           />
         </svg>
         
-        <div className="z-10 text-3xl font-bold text-white">
+        <div className={`z-10 ${fontSize} font-bold text-white`}>
           {wert}
         </div>
       </div>
       
-      <div className="flex items-center justify-center bg-[#3a3333] px-4 py-1 rounded-full">
-        <span className="text-sm font-medium text-[#d4af37]">{skill.name}</span>
+      <div className="flex items-center justify-center bg-[#3a3333] px-2 py-0.5 md:px-4 md:py-1 rounded-full">
+        <span className={`${labelSize} font-medium text-[#d4af37] truncate max-w-full`}>
+          {skill.name}
+        </span>
       </div>
     </div>
   );
