@@ -2,7 +2,7 @@
 import React from "react";
 import type { Talent } from "@/types/character";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Award } from "lucide-react";
+import { Award, ChevronRight, Edit } from "lucide-react";
 
 interface TalentItemProps {
   talent: Talent;
@@ -14,35 +14,30 @@ export function TalentItem({ talent, onEdit }: TalentItemProps) {
   
   return (
     <div 
-      className="flex flex-col items-center cursor-pointer transition-transform hover:scale-105"
+      className="flex items-center justify-between bg-[#f0ddb0] border border-[#d8c38d] rounded-md p-2 mb-2 hover:bg-[#e8d4a0] transition-colors cursor-pointer"
       onClick={() => onEdit(talent)}
     >
-      <div className={`relative flex flex-col items-center justify-center ${isMobile ? "w-full" : "w-36"} mb-2`}>
-        <div className="bg-[#f0ddb0] border-2 border-[#d8c38d] rounded-lg p-3 w-full flex flex-col items-center relative overflow-hidden">
-          {/* Decoration */}
-          <div className="absolute -top-1 -left-1 text-[#8b7339] opacity-20">
-            <Award size={isMobile ? 16 : 20} />
+      <div className="flex items-center">
+        <Award size={isMobile ? 16 : 20} className="text-[#8b7339] mr-2" />
+        <div className="overflow-hidden">
+          <div className="font-medium text-[#4e3c10] font-serif truncate">
+            {talent.name || "Unbenannt"}
           </div>
-          
-          {/* Talent name */}
-          <div className="mt-1 text-center">
-            <span className={`${isMobile ? "text-md" : "text-lg"} font-medium text-[#4e3c10] truncate max-w-full font-serif`}>
-              {talent.name || "Unbenannt"}
-            </span>
-          </div>
-          
-          {/* Talent stufe indicator */}
-          <div className="absolute bottom-0 right-0 bg-[#8b7339] text-[#f5e8c8] px-1 text-xs rounded-tl-md">
-            {talent.stufe || "-"}
-          </div>
-          
-          {/* Description preview (if any) */}
           {talent.beschreibung && (
-            <div className="mt-2 text-xs text-[#6b592b] line-clamp-2 text-center">
+            <div className="text-xs text-[#6b592b] truncate max-w-[200px]">
               {talent.beschreibung}
             </div>
           )}
         </div>
+      </div>
+
+      <div className="flex items-center">
+        {talent.stufe && (
+          <div className="bg-[#8b7339] text-[#f5e8c8] px-2 py-0.5 rounded-md text-xs mr-2">
+            {talent.stufe}
+          </div>
+        )}
+        <ChevronRight size={isMobile ? 14 : 16} className="text-[#8b7339]" />
       </div>
     </div>
   );

@@ -2,15 +2,16 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Award } from "lucide-react";
-import { useCharacter } from "@/context/CharacterContext";
+import { Plus, Award, Scroll } from "lucide-react";
+import { useTalents } from "@/context/TalentsContext";
 import type { Talent } from "@/types/character";
 import { TalentItem } from "./talents/TalentItem";
 import { TalentEditDialog } from "./talents/TalentEditDialog";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Separator } from "@/components/ui/separator";
 
 export function TalentsSection() {
-  const { talents, updateTalent, addTalent, deleteTalent } = useCharacter();
+  const { talents, updateTalent, addTalent, deleteTalent } = useTalents();
   const isMobile = useIsMobile();
 
   const [selectedTalent, setSelectedTalent] = useState<Talent | null>(null);
@@ -67,10 +68,10 @@ export function TalentsSection() {
     <Card className="bg-[#f5e8c8] border-[#d8c38d] shadow-sm relative overflow-hidden">
       {/* Decorative elements */}
       <div className="absolute top-2 left-2 text-[#8b7339] opacity-20">
-        <Award size={isMobile ? 20 : 24} />
+        <Scroll size={isMobile ? 20 : 24} />
       </div>
       <div className="absolute bottom-2 right-2 text-[#8b7339] opacity-20 transform rotate-180">
-        <Award size={isMobile ? 20 : 24} />
+        <Scroll size={isMobile ? 20 : 24} />
       </div>
       
       <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -84,18 +85,17 @@ export function TalentsSection() {
         </Button>
       </CardHeader>
       <CardContent>
-        <div className={`grid ${isMobile ? 'grid-cols-2 gap-2' : 'grid-cols-3 md:grid-cols-4 gap-3'}`}>
-          {talents.map((talent) => (
-            <TalentItem 
-              key={talent.id} 
-              talent={talent} 
-              onEdit={handleEditTalent} 
-            />
-          ))}
-          
-          {/* Empty state */}
-          {talents.length === 0 && (
-            <div className="col-span-full text-center py-6 text-[#6b592b] italic">
+        <div className="space-y-1">
+          {talents.length > 0 ? (
+            talents.map((talent) => (
+              <TalentItem 
+                key={talent.id} 
+                talent={talent} 
+                onEdit={handleEditTalent} 
+              />
+            ))
+          ) : (
+            <div className="text-center py-6 text-[#6b592b] italic">
               Keine Talente vorhanden. Klicke auf "Hinzufügen" um zu beginnen.
             </div>
           )}
