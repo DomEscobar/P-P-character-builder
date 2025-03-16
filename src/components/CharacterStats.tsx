@@ -63,17 +63,13 @@ export function CharacterStats() {
     }
   };
 
-  const calculateStrokeWidth = (value: number) => {
-    return value > 0 ? 10 : 5;
-  };
-
   return (
-    <Card className="bg-[#332d2d] border-[#473b3b]">
-      <CardHeader>
-        <CardTitle className="text-[#d4af37] text-center">Spielwerte</CardTitle>
+    <Card className="bg-[#f5e8c8] border-[#d8c38d] shadow-sm">
+      <CardHeader className="pb-2">
+        <CardTitle className="text-[#4e3c10] text-center text-lg font-serif">Spielwerte</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-3 gap-3">
           {stats.map((stat, index) => {
             const total = stat.start + stat.increase;
             return (
@@ -82,41 +78,16 @@ export function CharacterStats() {
                 className="flex flex-col items-center cursor-pointer transition-transform hover:scale-105"
                 onClick={() => handleStatClick(index)}
               >
-                <div className="relative flex items-center justify-center w-24 h-24 mb-2">
-                  {/* Background circle */}
-                  <svg className="absolute" width="100%" height="100%" viewBox="0 0 100 100">
-                    <circle
-                      cx="50"
-                      cy="50"
-                      r="40"
-                      fill="none"
-                      stroke="#3a3333"
-                      strokeWidth="10"
-                    />
-                  </svg>
-                  
-                  {/* Progress circle */}
-                  <svg className="absolute transform -rotate-90" width="100%" height="100%" viewBox="0 0 100 100">
-                    <circle
-                      cx="50"
-                      cy="50"
-                      r="40"
-                      fill="none"
-                      stroke="#d4af37"
-                      strokeWidth={calculateStrokeWidth(total)}
-                      strokeDasharray={`${total > 0 ? (total / 100) * 251.2 : 0} 251.2`}
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                  
-                  {/* Value in the middle */}
-                  <div className="z-10 text-3xl font-bold text-white">
+                <div className="bg-[#f0ddb0] border border-[#d8c38d] rounded-lg p-2 flex flex-col items-center w-full">
+                  <div className="text-[#8b7339] mb-1">
+                    {stat.icon}
+                  </div>
+                  <div className="text-xl font-medium text-[#4e3c10]">
                     {total}
                   </div>
-                </div>
-                
-                <div className="flex items-center justify-center bg-[#3a3333] px-4 py-1 rounded-full">
-                  <span className="text-sm font-medium text-[#d4af37]">{stat.name}</span>
+                  <div className="text-xs text-[#6b592b] mt-1 font-medium">
+                    {stat.short}
+                  </div>
                 </div>
               </div>
             );
@@ -124,52 +95,51 @@ export function CharacterStats() {
         </div>
 
         <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-          <DialogContent className="bg-[#262222] border-[#473b3b] text-[#e0d0b0]">
+          <DialogContent className="bg-[#f5e8c8] border-[#d8c38d] text-[#4e3c10] max-w-xs">
             <DialogHeader>
-              <DialogTitle className="text-[#d4af37]">
+              <DialogTitle className="text-[#4e3c10] font-serif">
                 {selectedStat !== null ? stats[selectedStat].name : "Stat"} bearbeiten
               </DialogTitle>
             </DialogHeader>
             
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="flex flex-col space-y-2">
-                  <label className="text-sm text-[#c0b090]">Basiswert</label>
+            <div className="grid gap-3 py-3">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="flex flex-col space-y-1">
+                  <label className="text-xs text-[#6b592b]">Basiswert</label>
                   <Input
                     type="number"
                     value={editValues.start}
                     onChange={(e) => setEditValues({ ...editValues, start: Number(e.target.value) })}
-                    className="bg-[#332d2d] border-[#473b3b] text-[#e0d0b0]"
+                    className="bg-[#f0ddb0] border-[#d0b978] text-[#4e3c10] h-8 text-sm"
                   />
                 </div>
-                <div className="flex flex-col space-y-2">
-                  <label className="text-sm text-[#c0b090]">Steigerung</label>
+                <div className="flex flex-col space-y-1">
+                  <label className="text-xs text-[#6b592b]">Steigerung</label>
                   <Input
                     type="number"
                     value={editValues.increase}
                     onChange={(e) => setEditValues({ ...editValues, increase: Number(e.target.value) })}
-                    className="bg-[#332d2d] border-[#473b3b] text-[#e0d0b0]"
+                    className="bg-[#f0ddb0] border-[#d0b978] text-[#4e3c10] h-8 text-sm"
                   />
                 </div>
               </div>
               
-              <div className="flex justify-between items-center pt-2">
-                <div className="text-sm text-[#c0b090]">
-                  Gesamtwert: <span className="text-[#d4af37] font-bold">{editValues.start + editValues.increase}</span>
-                </div>
+              <div className="text-sm text-[#6b592b] pt-1">
+                Gesamtwert: <span className="text-[#4e3c10] font-bold">{editValues.start + editValues.increase}</span>
               </div>
             </div>
             
             <DialogFooter>
               <Button 
                 onClick={() => setOpenDialog(false)}
-                className="bg-[#332d2d] hover:bg-[#473b3b] text-[#e0d0b0]"
+                variant="outline"
+                className="border-[#d0b978] text-[#6b592b] hover:bg-[#ecdcb4] hover:text-[#4e3c10]"
               >
                 Abbrechen
               </Button>
               <Button 
                 onClick={handleSaveStat}
-                className="bg-[#d4af37] hover:bg-[#c09a20] text-[#262222]"
+                className="bg-[#8b7339] hover:bg-[#6b592b] text-[#f5e8c8]"
               >
                 Speichern
               </Button>

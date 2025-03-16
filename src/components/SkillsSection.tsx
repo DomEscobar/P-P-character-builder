@@ -67,18 +67,19 @@ export function SkillsSection() {
   };
 
   return (
-    <Card className="bg-[#332d2d] border-[#473b3b]">
-      <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle className="text-[#d4af37] text-center">Fähigkeiten</CardTitle>
+    <Card className="bg-[#f5e8c8] border-[#d8c38d] shadow-sm">
+      <CardHeader className="flex flex-row items-center justify-between pb-2">
+        <CardTitle className="text-[#4e3c10] font-serif text-lg">Fähigkeiten</CardTitle>
         <Button 
           onClick={handleAddSkill}
-          className="bg-[#403e43] hover:bg-[#53525a] text-[#d4af37]"
+          size="sm"
+          className="bg-[#8b7339] hover:bg-[#6b592b] text-[#f5e8c8] h-7 text-xs"
         >
-          <Plus size={16} className="mr-1" /> Fähigkeit hinzufügen
+          <Plus size={14} className="mr-1" /> Hinzufügen
         </Button>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
           {skills.map((skill) => (
             <SkillItem 
               key={skill.id} 
