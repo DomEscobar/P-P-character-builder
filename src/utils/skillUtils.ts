@@ -1,5 +1,5 @@
 
-import type { Skill } from "@/context/CharacterContext";
+import type { Skill } from "@/types/character";
 import type { Stat } from "@/components/CharacterStats";
 
 export const getCharacterStatOptions = (stats: Stat[]) => {
