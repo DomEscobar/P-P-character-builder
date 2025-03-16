@@ -1,17 +1,18 @@
 
 import { useState } from "react";
-import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { User, Scroll, Users, Sword, Pencil, Trash2 } from "lucide-react";
+import { User, Pencil, Heart, Coins } from "lucide-react";
 import { useCharacter } from "@/context/CharacterContext";
+import { useHealthWealth } from "@/context/HealthWealthContext";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 export function CharacterHeader() {
   const { profile, updateProfile } = useCharacter();
+  const { healthWealth, updateHealth, updateWealth } = useHealthWealth();
   const isMobile = useIsMobile();
   const [editOpen, setEditOpen] = useState(false);
 
@@ -21,8 +22,20 @@ export function CharacterHeader() {
     });
   };
 
+  const handleHealthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    updateHealth({
+      [e.target.name]: parseInt(e.target.value) || 0
+    });
+  };
+
+  const handleWealthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    updateWealth({
+      [e.target.name]: parseInt(e.target.value) || 0
+    });
+  };
+
   return (
-    <div className="mb-4">
+    <div className="mb-4 space-y-3">
       <Card className="bg-[#f5e8c8] border-[#d8c38d] shadow-md">
         <CardContent className="p-4">
           <div className="flex items-center gap-4">
@@ -65,6 +78,82 @@ export function CharacterHeader() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Health and Wealth Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        {/* Health Card */}
+        <Card className="bg-[#f5e8c8] border-[#d8c38d] shadow-md">
+          <CardContent className="p-3">
+            <div className="flex items-center">
+              <div className="flex items-center mr-3">
+                <Heart size={18} className="text-[#8b7339] mr-2" />
+                <span className="text-[#4e3c10] font-serif font-medium">Lebenspunkte</span>
+              </div>
+              <div className="flex items-center space-x-2 ml-auto">
+                <div className="flex flex-col items-center">
+                  <Label className="text-[#6b592b] text-xs">Robustheit</Label>
+                  <Input 
+                    name="robustheit"
+                    value={healthWealth.health.robustheit}
+                    onChange={handleHealthChange}
+                    className="w-16 h-8 bg-[#f0ddb0] border-[#d8c38d] text-[#4e3c10] text-center"
+                  />
+                </div>
+                <div className="flex flex-col items-center">
+                  <Label className="text-[#6b592b] text-xs">LP</Label>
+                  <Input 
+                    name="lp"
+                    value={healthWealth.health.lp}
+                    onChange={handleHealthChange}
+                    className="w-16 h-8 bg-[#f0ddb0] border-[#d8c38d] text-[#4e3c10] text-center"
+                  />
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        {/* Wealth Card */}
+        <Card className="bg-[#f5e8c8] border-[#d8c38d] shadow-md">
+          <CardContent className="p-3">
+            <div className="flex items-center">
+              <div className="flex items-center mr-3">
+                <Coins size={18} className="text-[#8b7339] mr-2" />
+                <span className="text-[#4e3c10] font-serif font-medium">Vermögen</span>
+              </div>
+              <div className="flex items-center space-x-2 ml-auto">
+                <div className="flex flex-col items-center">
+                  <Label className="text-[#6b592b] text-xs">Gold</Label>
+                  <Input 
+                    name="gold"
+                    value={healthWealth.wealth.gold}
+                    onChange={handleWealthChange}
+                    className="w-16 h-8 bg-[#f0ddb0] border-[#d8c38d] text-[#4e3c10] text-center"
+                  />
+                </div>
+                <div className="flex flex-col items-center">
+                  <Label className="text-[#6b592b] text-xs">Silber</Label>
+                  <Input 
+                    name="silber"
+                    value={healthWealth.wealth.silber}
+                    onChange={handleWealthChange}
+                    className="w-16 h-8 bg-[#f0ddb0] border-[#d8c38d] text-[#4e3c10] text-center"
+                  />
+                </div>
+                <div className="flex flex-col items-center">
+                  <Label className="text-[#6b592b] text-xs">Groschen</Label>
+                  <Input 
+                    name="groschen"
+                    value={healthWealth.wealth.groschen}
+                    onChange={handleWealthChange}
+                    className="w-16 h-8 bg-[#f0ddb0] border-[#d8c38d] text-[#4e3c10] text-center"
+                  />
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
       <Dialog open={editOpen} onOpenChange={setEditOpen}>
         <DialogContent className="bg-[#f5e8c8] border-[#d8c38d] text-[#4e3c10] max-w-sm mx-auto">

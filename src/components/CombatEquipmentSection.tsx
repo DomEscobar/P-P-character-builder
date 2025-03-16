@@ -1,10 +1,11 @@
+
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Shield, Package, Heart, Sword, Wand, Coins } from "lucide-react";
+import { Shield, Package, Sword, Wand } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Separator } from "@/components/ui/separator";
 
@@ -278,7 +279,7 @@ export function CombatEquipmentSection() {
         </CardContent>
       </Card>
 
-      {/* Other Sections in a 2-column grid layout */}
+      {/* Two-column layout for remaining sections */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Left Column */}
         <div className="space-y-4">
@@ -337,63 +338,10 @@ export function CombatEquipmentSection() {
               />
             </CardContent>
           </Card>
-
-          {/* Corruption & Mutation Section */}
-          <Card className="bg-[#f5e8c8] border-[#d8c38d] shadow-sm relative overflow-hidden">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-[#4e3c10] font-serif text-lg">
-                Korrumpierung & Mutation
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Textarea 
-                placeholder="Beschreibe Korrumpierung und Mutationen deines Charakters..."
-                className="bg-[#f0ddb0] border-[#d8c38d] text-[#4e3c10] min-h-[120px]"
-              />
-            </CardContent>
-          </Card>
         </div>
 
         {/* Right Column */}
         <div className="space-y-4">
-          {/* Wealth Section */}
-          <Card className="bg-[#f5e8c8] border-[#d8c38d] shadow-sm relative overflow-hidden">
-            <div className="absolute top-2 left-2 text-[#8b7339] opacity-20">
-              <Coins size={isMobile ? 20 : 24} />
-            </div>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-[#4e3c10] font-serif text-lg flex items-center">
-                <Coins size={isMobile ? 18 : 20} className="mr-2 text-[#8b7339]" />
-                Vermögen
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-3 gap-4">
-                <div className="space-y-2">
-                  <Label className="text-[#6b592b] font-medium">Gold (G)</Label>
-                  <Input 
-                    placeholder="0"
-                    className="bg-[#f0ddb0] border-[#d8c38d] text-[#4e3c10] text-center font-medium"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-[#6b592b] font-medium">Silber (S)</Label>
-                  <Input 
-                    placeholder="0"
-                    className="bg-[#f0ddb0] border-[#d8c38d] text-[#4e3c10] text-center font-medium"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-[#6b592b] font-medium">Groschen (GK)</Label>
-                  <Input 
-                    placeholder="0"
-                    className="bg-[#f0ddb0] border-[#d8c38d] text-[#4e3c10] text-center font-medium"
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
           {/* Encumbrance Section */}
           <Card className="bg-[#f5e8c8] border-[#d8c38d] shadow-sm relative overflow-hidden">
             <CardHeader className="pb-2">
@@ -443,34 +391,18 @@ export function CombatEquipmentSection() {
             </CardContent>
           </Card>
 
-          {/* Hit Points Section */}
+          {/* Corruption & Mutation Section */}
           <Card className="bg-[#f5e8c8] border-[#d8c38d] shadow-sm relative overflow-hidden">
-            <div className="absolute top-2 left-2 text-[#8b7339] opacity-20">
-              <Heart size={isMobile ? 20 : 24} />
-            </div>
             <CardHeader className="pb-2">
-              <CardTitle className="text-[#4e3c10] font-serif text-lg flex items-center">
-                <Heart size={isMobile ? 18 : 20} className="mr-2 text-[#8b7339]" />
-                Lebenspunkte
+              <CardTitle className="text-[#4e3c10] font-serif text-lg">
+                Korrumpierung & Mutation
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label className="text-[#6b592b] font-medium">Robustheit</Label>
-                  <Input 
-                    placeholder="0"
-                    className="bg-[#f0ddb0] border-[#d8c38d] text-[#4e3c10] text-center font-medium text-lg"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-[#6b592b] font-medium">LP</Label>
-                  <Input 
-                    placeholder="0"
-                    className="bg-[#f0ddb0] border-[#d8c38d] text-[#4e3c10] text-center font-medium text-lg"
-                  />
-                </div>
-              </div>
+              <Textarea 
+                placeholder="Beschreibe Korrumpierung und Mutationen deines Charakters..."
+                className="bg-[#f0ddb0] border-[#d8c38d] text-[#4e3c10] min-h-[120px]"
+              />
             </CardContent>
           </Card>
         </div>

@@ -10,6 +10,7 @@ import { GroupSection } from "@/components/GroupSection";
 import { CombatEquipmentSection } from "@/components/CombatEquipmentSection";
 import { Activity, Lightbulb, Award, FileText, Shield, Sword } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { HealthWealthProvider } from "@/context/HealthWealthContext";
 
 const Index = () => {
   const isMobile = useIsMobile();
@@ -21,59 +22,61 @@ const Index = () => {
           Character Roundtable
         </h1>
         
-        <CharacterHeader />
-        
-        <div className="relative">
-          <div className="absolute inset-0 bg-[#e2cc9c] rounded-lg transform -rotate-1 scale-[1.02] -z-10"></div>
-          <div className="bg-[#f5e8c8] rounded-lg shadow-md p-4 border border-[#d8c38d]">
-            <Tabs defaultValue="stats" className="w-full">
-              <TabsList className="grid grid-cols-5 mb-4 md:mb-4 bg-[#f0ddb0] border border-[#d8c38d] p-1 rounded-md">
-                <TabsTrigger value="stats" className="text-[#6b592b] data-[state=active]:bg-[#e2cc9c] data-[state=active]:text-[#4e3c10]">
-                  <Shield size={16} className="md:mr-2" />
-                  {!isMobile && "Stats"}
-                </TabsTrigger>
-                <TabsTrigger value="skills" className="text-[#6b592b] data-[state=active]:bg-[#e2cc9c] data-[state=active]:text-[#4e3c10]">
-                  <Award size={16} className="md:mr-2" />
-                  {!isMobile && "Skills"}
-                </TabsTrigger>
-                <TabsTrigger value="talents" className="text-[#6b592b] data-[state=active]:bg-[#e2cc9c] data-[state=active]:text-[#4e3c10]">
-                  <Lightbulb size={16} className="md:mr-2" />
-                  {!isMobile && "Talents"}
-                </TabsTrigger>
-                <TabsTrigger value="combat" className="text-[#6b592b] data-[state=active]:bg-[#e2cc9c] data-[state=active]:text-[#4e3c10]">
-                  <Sword size={16} className="md:mr-2" />
-                  {!isMobile && "Combat"}
-                </TabsTrigger>
-                <TabsTrigger value="info" className="text-[#6b592b] data-[state=active]:bg-[#e2cc9c] data-[state=active]:text-[#4e3c10]">
-                  <FileText size={16} className="md:mr-2" />
-                  {!isMobile && "Info"}
-                </TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="stats" className="space-y-4 md:space-y-4">
-                <CharacterStats />
-                <SecondaryAttributes />
-              </TabsContent>
-              
-              <TabsContent value="skills" className="space-y-4 md:space-y-4">
-                <SkillsSection />
-              </TabsContent>
-              
-              <TabsContent value="talents" className="space-y-4 md:space-y-4">
-                <TalentsSection />
-              </TabsContent>
-              
-              <TabsContent value="combat" className="space-y-4 md:space-y-4">
-                <CombatEquipmentSection />
-              </TabsContent>
-              
-              <TabsContent value="info" className="space-y-4 md:space-y-4">
-                <GoalsSection />
-                <GroupSection />
-              </TabsContent>
-            </Tabs>
+        <HealthWealthProvider>
+          <CharacterHeader />
+          
+          <div className="relative">
+            <div className="absolute inset-0 bg-[#e2cc9c] rounded-lg transform -rotate-1 scale-[1.02] -z-10"></div>
+            <div className="bg-[#f5e8c8] rounded-lg shadow-md p-4 border border-[#d8c38d]">
+              <Tabs defaultValue="stats" className="w-full">
+                <TabsList className="grid grid-cols-5 mb-4 md:mb-4 bg-[#f0ddb0] border border-[#d8c38d] p-1 rounded-md">
+                  <TabsTrigger value="stats" className="text-[#6b592b] data-[state=active]:bg-[#e2cc9c] data-[state=active]:text-[#4e3c10]">
+                    <Shield size={16} className="md:mr-2" />
+                    {!isMobile && "Stats"}
+                  </TabsTrigger>
+                  <TabsTrigger value="skills" className="text-[#6b592b] data-[state=active]:bg-[#e2cc9c] data-[state=active]:text-[#4e3c10]">
+                    <Award size={16} className="md:mr-2" />
+                    {!isMobile && "Skills"}
+                  </TabsTrigger>
+                  <TabsTrigger value="talents" className="text-[#6b592b] data-[state=active]:bg-[#e2cc9c] data-[state=active]:text-[#4e3c10]">
+                    <Lightbulb size={16} className="md:mr-2" />
+                    {!isMobile && "Talents"}
+                  </TabsTrigger>
+                  <TabsTrigger value="combat" className="text-[#6b592b] data-[state=active]:bg-[#e2cc9c] data-[state=active]:text-[#4e3c10]">
+                    <Sword size={16} className="md:mr-2" />
+                    {!isMobile && "Combat"}
+                  </TabsTrigger>
+                  <TabsTrigger value="info" className="text-[#6b592b] data-[state=active]:bg-[#e2cc9c] data-[state=active]:text-[#4e3c10]">
+                    <FileText size={16} className="md:mr-2" />
+                    {!isMobile && "Info"}
+                  </TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="stats" className="space-y-4 md:space-y-4">
+                  <CharacterStats />
+                  <SecondaryAttributes />
+                </TabsContent>
+                
+                <TabsContent value="skills" className="space-y-4 md:space-y-4">
+                  <SkillsSection />
+                </TabsContent>
+                
+                <TabsContent value="talents" className="space-y-4 md:space-y-4">
+                  <TalentsSection />
+                </TabsContent>
+                
+                <TabsContent value="combat" className="space-y-4 md:space-y-4">
+                  <CombatEquipmentSection />
+                </TabsContent>
+                
+                <TabsContent value="info" className="space-y-4 md:space-y-4">
+                  <GoalsSection />
+                  <GroupSection />
+                </TabsContent>
+              </Tabs>
+            </div>
           </div>
-        </div>
+        </HealthWealthProvider>
       </div>
     </div>
   );
