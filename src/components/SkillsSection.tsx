@@ -6,47 +6,47 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus } from "lucide-react";
+import { defaultStats, Stat } from "./CharacterStats";
 
 type Skill = {
   id: string;
   name: string;
   spielwert: string;
   steigerung: number;
-  wert: string;
 };
 
 // Get character stats to use in the dropdown
 const getCharacterStatOptions = () => {
-  return [
-    { value: "KG", label: "Kampfgeschick (KG)" },
-    { value: "BF", label: "Ballistische Fertigkeit (BF)" },
-    { value: "ST", label: "Stärke (ST)" },
-    { value: "WI", label: "Widerstand (WI)" },
-    { value: "GW", label: "Gewandtheit (GW)" },
-    { value: "GS", label: "Geschwindigkeit (GS)" },
-    { value: "IN", label: "Intelligenz (IN)" },
-    { value: "WK", label: "Willenskraft (WK)" },
-    { value: "CH", label: "Charisma (CH)" },
-  ];
+  return defaultStats.map(stat => ({
+    value: stat.short,
+    label: `${stat.name} (${stat.short})`,
+    baseValue: stat.start
+  }));
 };
 
 export function SkillsSection() {
   const [skills, setSkills] = useState<Skill[]>([
-    { id: "1", name: "Anführen", spielwert: "CH", steigerung: 0, wert: "13" },
-    { id: "2", name: "Klettern", spielwert: "ST", steigerung: 0, wert: "10" },
-    { id: "3", name: "Orientierung", spielwert: "IN", steigerung: 0, wert: "15" },
-    { id: "4", name: "Reiten", spielwert: "GW", steigerung: 0, wert: "12" },
-    { id: "5", name: "Schleichen", spielwert: "GW", steigerung: 0, wert: "12" },
+    { id: "1", name: "Anführen", spielwert: "CH", steigerung: 0 },
+    { id: "2", name: "Klettern", spielwert: "ST", steigerung: 0 },
+    { id: "3", name: "Orientierung", spielwert: "IN", steigerung: 0 },
+    { id: "4", name: "Reiten", spielwert: "GW", steigerung: 0 },
+    { id: "5", name: "Schleichen", spielwert: "GW", steigerung: 0 },
   ]);
 
   const [selectedSkill, setSelectedSkill] = useState<Skill | null>(null);
   const [openDialog, setOpenDialog] = useState(false);
-  const [editValues, setEditValues] = useState({ name: "", spielwert: "", steigerung: 0, wert: "" });
+  const [editValues, setEditValues] = useState({ name: "", spielwert: "", steigerung: 0 });
+
+  // Calculate the total value based on base value of spielwert + steigerung
+  const calculateWert = (skill: Skill): number => {
+    const statOption = getCharacterStatOptions().find(option => option.value === skill.spielwert);
+    return statOption ? statOption.baseValue + skill.steigerung : 0;
+  };
 
   const handleAddSkill = () => {
     const newId = `skill${skills.length + 1}`;
-    setSelectedSkill({ id: newId, name: "", spielwert: "", steigerung: 0, wert: "" });
-    setEditValues({ name: "", spielwert: "", steigerung: 0, wert: "" });
+    setSelectedSkill({ id: newId, name: "", spielwert: "", steigerung: 0 });
+    setEditValues({ name: "", spielwert: "", steigerung: 0 });
     setOpenDialog(true);
   };
 
@@ -55,8 +55,7 @@ export function SkillsSection() {
     setEditValues({
       name: skill.name,
       spielwert: skill.spielwert,
-      steigerung: skill.steigerung,
-      wert: skill.wert
+      steigerung: skill.steigerung
     });
     setOpenDialog(true);
   };
@@ -70,8 +69,7 @@ export function SkillsSection() {
         ...selectedSkill,
         name: editValues.name,
         spielwert: editValues.spielwert,
-        steigerung: editValues.steigerung,
-        wert: editValues.wert
+        steigerung: editValues.steigerung
       };
 
       if (existingIndex >= 0) {
@@ -95,13 +93,12 @@ export function SkillsSection() {
     }
   };
 
-  const calculateStrokeWidth = (value: string) => {
-    return parseInt(value) > 0 ? 10 : 5;
+  const calculateStrokeWidth = (value: number) => {
+    return value > 0 ? 10 : 5;
   };
 
-  const getStrokeDashArray = (value: string) => {
-    const numValue = parseInt(value) || 0;
-    return `${numValue > 0 ? (numValue / 100) * 251.2 : 0} 251.2`;
+  const getStrokeDashArray = (value: number) => {
+    return `${value > 0 ? (value / 100) * 251.2 : 0} 251.2`;
   };
 
   return (
@@ -117,50 +114,53 @@ export function SkillsSection() {
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {skills.map((skill) => (
-            <div 
-              key={skill.id}
-              className="flex flex-col items-center cursor-pointer transition-transform hover:scale-105"
-              onClick={() => handleEditSkill(skill)}
-            >
-              <div className="relative flex items-center justify-center w-24 h-24 mb-2">
-                {/* Background circle */}
-                <svg className="absolute" width="100%" height="100%" viewBox="0 0 100 100">
-                  <circle
-                    cx="50"
-                    cy="50"
-                    r="40"
-                    fill="none"
-                    stroke="#3a3333"
-                    strokeWidth="10"
-                  />
-                </svg>
+          {skills.map((skill) => {
+            const wert = calculateWert(skill);
+            return (
+              <div 
+                key={skill.id}
+                className="flex flex-col items-center cursor-pointer transition-transform hover:scale-105"
+                onClick={() => handleEditSkill(skill)}
+              >
+                <div className="relative flex items-center justify-center w-24 h-24 mb-2">
+                  {/* Background circle */}
+                  <svg className="absolute" width="100%" height="100%" viewBox="0 0 100 100">
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="40"
+                      fill="none"
+                      stroke="#3a3333"
+                      strokeWidth="10"
+                    />
+                  </svg>
+                  
+                  {/* Progress circle */}
+                  <svg className="absolute transform -rotate-90" width="100%" height="100%" viewBox="0 0 100 100">
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="40"
+                      fill="none"
+                      stroke="#d4af37"
+                      strokeWidth={calculateStrokeWidth(wert)}
+                      strokeDasharray={getStrokeDashArray(wert)}
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  
+                  {/* Value in the middle */}
+                  <div className="z-10 text-3xl font-bold text-white">
+                    {wert}
+                  </div>
+                </div>
                 
-                {/* Progress circle */}
-                <svg className="absolute transform -rotate-90" width="100%" height="100%" viewBox="0 0 100 100">
-                  <circle
-                    cx="50"
-                    cy="50"
-                    r="40"
-                    fill="none"
-                    stroke="#d4af37"
-                    strokeWidth={calculateStrokeWidth(skill.wert)}
-                    strokeDasharray={getStrokeDashArray(skill.wert)}
-                    strokeLinecap="round"
-                  />
-                </svg>
-                
-                {/* Value in the middle */}
-                <div className="z-10 text-3xl font-bold text-white">
-                  {skill.wert}
+                <div className="flex items-center justify-center bg-[#3a3333] px-4 py-1 rounded-full">
+                  <span className="text-sm font-medium text-[#d4af37]">{skill.name}</span>
                 </div>
               </div>
-              
-              <div className="flex items-center justify-center bg-[#3a3333] px-4 py-1 rounded-full">
-                <span className="text-sm font-medium text-[#d4af37]">{skill.name}</span>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         <Dialog open={openDialog} onOpenChange={setOpenDialog}>
@@ -216,12 +216,12 @@ export function SkillsSection() {
                 </div>
                 
                 <div className="flex flex-col space-y-2">
-                  <label className="text-sm text-[#c0b090]">Wert</label>
-                  <Input
-                    value={editValues.wert}
-                    onChange={(e) => setEditValues({ ...editValues, wert: e.target.value })}
-                    className="bg-[#332d2d] border-[#473b3b] text-[#e0d0b0]"
-                  />
+                  <label className="text-sm text-[#c0b090]">Wert (Spielwert + Steigerung)</label>
+                  <div className="bg-[#332d2d] border border-[#473b3b] text-[#e0d0b0] rounded-md px-3 py-2 h-10">
+                    {editValues.spielwert 
+                      ? getCharacterStatOptions().find(option => option.value === editValues.spielwert)?.baseValue + editValues.steigerung 
+                      : "—"}
+                  </div>
                 </div>
               </div>
             </div>
