@@ -11,12 +11,11 @@ import {
   Brain, 
   Wind, 
   ArrowRight, 
-  Eye, 
   Compass, 
   MessageCircle
 } from "lucide-react";
 
-type Stat = {
+export type Stat = {
   name: string;
   short: string;
   icon: React.ReactNode;
@@ -24,18 +23,21 @@ type Stat = {
   increase: number;
 };
 
+// Export the stats for other components to use
+export const defaultStats: Stat[] = [
+  { name: "Kampfgeschick", short: "KG", icon: <Shield size={20} />, start: 30, increase: 5 },
+  { name: "Ballistische Fertigkeit", short: "BF", icon: <Target size={20} />, start: 30, increase: 0 },
+  { name: "Stärke", short: "ST", icon: <Dumbbell size={20} />, start: 30, increase: 5 },
+  { name: "Widerstand", short: "WI", icon: <Shield size={20} />, start: 30, increase: 10 },
+  { name: "Gewandtheit", short: "GW", icon: <Wind size={20} />, start: 30, increase: 5 },
+  { name: "Geschwindigkeit", short: "GS", icon: <ArrowRight size={20} />, start: 30, increase: 0 },
+  { name: "Intelligenz", short: "IN", icon: <Brain size={20} />, start: 30, increase: 5 },
+  { name: "Willenskraft", short: "WK", icon: <Compass size={20} />, start: 30, increase: 0 },
+  { name: "Charisma", short: "CH", icon: <MessageCircle size={20} />, start: 30, increase: 0 },
+];
+
 export function CharacterStats() {
-  const [stats, setStats] = useState<Stat[]>([
-    { name: "Kampfgeschick", short: "KG", icon: <Shield size={20} />, start: 30, increase: 5 },
-    { name: "Ballistische Fertigkeit", short: "BF", icon: <Target size={20} />, start: 30, increase: 0 },
-    { name: "Stärke", short: "ST", icon: <Dumbbell size={20} />, start: 30, increase: 5 },
-    { name: "Widerstand", short: "WI", icon: <Shield size={20} />, start: 30, increase: 10 },
-    { name: "Gewandtheit", short: "GW", icon: <Wind size={20} />, start: 30, increase: 5 },
-    { name: "Geschwindigkeit", short: "GS", icon: <ArrowRight size={20} />, start: 30, increase: 0 },
-    { name: "Intelligenz", short: "IN", icon: <Brain size={20} />, start: 30, increase: 5 },
-    { name: "Willenskraft", short: "WK", icon: <Compass size={20} />, start: 30, increase: 0 },
-    { name: "Charisma", short: "CH", icon: <MessageCircle size={20} />, start: 30, increase: 0 },
-  ]);
+  const [stats, setStats] = useState<Stat[]>(defaultStats);
 
   const [selectedStat, setSelectedStat] = useState<number | null>(null);
   const [openDialog, setOpenDialog] = useState(false);
