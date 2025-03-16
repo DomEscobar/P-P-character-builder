@@ -1,7 +1,8 @@
 
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { 
   Shield, 
@@ -36,10 +37,31 @@ export function CharacterStats() {
     { name: "Charisma", short: "CH", icon: <MessageCircle size={20} />, start: 30, increase: 0 },
   ]);
 
-  const handleStatChange = (index: number, field: 'start' | 'increase', value: number) => {
-    const newStats = [...stats];
-    newStats[index][field] = value;
-    setStats(newStats);
+  const [selectedStat, setSelectedStat] = useState<number | null>(null);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [editValues, setEditValues] = useState({ start: 0, increase: 0 });
+
+  const handleStatClick = (index: number) => {
+    setSelectedStat(index);
+    setEditValues({ 
+      start: stats[index].start, 
+      increase: stats[index].increase 
+    });
+    setOpenDialog(true);
+  };
+
+  const handleSaveStat = () => {
+    if (selectedStat !== null) {
+      const newStats = [...stats];
+      newStats[selectedStat].start = editValues.start;
+      newStats[selectedStat].increase = editValues.increase;
+      setStats(newStats);
+      setOpenDialog(false);
+    }
+  };
+
+  const calculateStrokeWidth = (value: number) => {
+    return value > 0 ? 10 : 5;
   };
 
   return (
@@ -47,49 +69,110 @@ export function CharacterStats() {
       <CardHeader>
         <CardTitle className="text-[#d4af37] text-center">Spielwerte</CardTitle>
       </CardHeader>
-      <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {stats.map((stat, index) => (
-          <div 
-            key={stat.short} 
-            className="flex flex-col p-4 bg-[#262222] rounded-md border border-[#473b3b]"
-          >
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center">
-                <div className="mr-3 p-2 bg-[#3a3333] rounded-full">
-                  {stat.icon}
+      <CardContent>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+          {stats.map((stat, index) => {
+            const total = stat.start + stat.increase;
+            return (
+              <div 
+                key={stat.short}
+                className="flex flex-col items-center cursor-pointer transition-transform hover:scale-105"
+                onClick={() => handleStatClick(index)}
+              >
+                <div className="relative flex items-center justify-center w-24 h-24 mb-2">
+                  {/* Background circle */}
+                  <svg className="absolute" width="100%" height="100%" viewBox="0 0 100 100">
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="40"
+                      fill="none"
+                      stroke="#3a3333"
+                      strokeWidth="10"
+                    />
+                  </svg>
+                  
+                  {/* Progress circle */}
+                  <svg className="absolute transform -rotate-90" width="100%" height="100%" viewBox="0 0 100 100">
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="40"
+                      fill="none"
+                      stroke="#d4af37"
+                      strokeWidth={calculateStrokeWidth(total)}
+                      strokeDasharray={`${total > 0 ? (total / 100) * 251.2 : 0} 251.2`}
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  
+                  {/* Value in the middle */}
+                  <div className="z-10 text-3xl font-bold text-white">
+                    {total}
+                  </div>
                 </div>
-                <span className="text-lg font-bold">{stat.short}</span>
+                
+                <div className="flex items-center justify-center bg-[#3a3333] px-4 py-1 rounded-full">
+                  <span className="text-sm font-medium text-[#d4af37]">{stat.name}</span>
+                </div>
               </div>
-              <span className="text-xl text-[#d4af37]">{stat.start + stat.increase}</span>
+            );
+          })}
+        </div>
+
+        <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+          <DialogContent className="bg-[#262222] border-[#473b3b] text-[#e0d0b0]">
+            <DialogHeader>
+              <DialogTitle className="text-[#d4af37]">
+                {selectedStat !== null ? stats[selectedStat].name : "Stat"} bearbeiten
+              </DialogTitle>
+            </DialogHeader>
+            
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="flex flex-col space-y-2">
+                  <label className="text-sm text-[#c0b090]">Basiswert</label>
+                  <Input
+                    type="number"
+                    value={editValues.start}
+                    onChange={(e) => setEditValues({ ...editValues, start: Number(e.target.value) })}
+                    className="bg-[#332d2d] border-[#473b3b] text-[#e0d0b0]"
+                  />
+                </div>
+                <div className="flex flex-col space-y-2">
+                  <label className="text-sm text-[#c0b090]">Steigerung</label>
+                  <Input
+                    type="number"
+                    value={editValues.increase}
+                    onChange={(e) => setEditValues({ ...editValues, increase: Number(e.target.value) })}
+                    className="bg-[#332d2d] border-[#473b3b] text-[#e0d0b0]"
+                  />
+                </div>
+              </div>
+              
+              <div className="flex justify-between items-center pt-2">
+                <div className="text-sm text-[#c0b090]">
+                  Gesamtwert: <span className="text-[#d4af37] font-bold">{editValues.start + editValues.increase}</span>
+                </div>
+              </div>
             </div>
             
-            <Progress 
-              value={(stat.start + stat.increase) / 100 * 100} 
-              className="h-2 bg-[#473b3b] mb-3" 
-            />
-            
-            <div className="flex justify-between mt-2 gap-4">
-              <div className="flex-1">
-                <label className="text-xs text-[#c0b090] block mb-1">Base</label>
-                <Input
-                  type="number"
-                  value={stat.start}
-                  onChange={(e) => handleStatChange(index, 'start', Number(e.target.value))}
-                  className="bg-[#262222] border-[#473b3b] text-[#e0d0b0] h-8"
-                />
-              </div>
-              <div className="flex-1">
-                <label className="text-xs text-[#c0b090] block mb-1">Increase</label>
-                <Input
-                  type="number"
-                  value={stat.increase}
-                  onChange={(e) => handleStatChange(index, 'increase', Number(e.target.value))}
-                  className="bg-[#262222] border-[#473b3b] text-[#e0d0b0] h-8"
-                />
-              </div>
-            </div>
-          </div>
-        ))}
+            <DialogFooter>
+              <Button 
+                onClick={() => setOpenDialog(false)}
+                className="bg-[#332d2d] hover:bg-[#473b3b] text-[#e0d0b0]"
+              >
+                Abbrechen
+              </Button>
+              <Button 
+                onClick={handleSaveStat}
+                className="bg-[#d4af37] hover:bg-[#c09a20] text-[#262222]"
+              >
+                Speichern
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </CardContent>
     </Card>
   );
