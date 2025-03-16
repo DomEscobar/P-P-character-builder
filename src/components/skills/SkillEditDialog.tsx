@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import type { Skill } from "@/context/CharacterContext";
 import { Stat } from "@/components/CharacterStats";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Scroll, Feather, BookOpen, Trash2 } from "lucide-react";
 
 interface SkillEditDialogProps {
   open: boolean;
@@ -44,39 +45,57 @@ export function SkillEditDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className={`bg-[#f5e8c8] border-[#d8c38d] text-[#4e3c10] ${isMobile ? 'p-3 max-w-[90vw]' : 'p-6'}`}>
-        <DialogHeader>
-          <DialogTitle className="text-[#8b7339] font-serif">
+      <DialogContent className={`bg-[#f5e8c8] border-[#d8c38d] text-[#4e3c10] max-w-[90vw] sm:max-w-md relative overflow-hidden ${isMobile ? 'p-4' : 'p-6'}`}>
+        {/* Decorative background elements */}
+        <div className="absolute top-0 right-0 text-[#d8c38d] opacity-10">
+          <Scroll size={isMobile ? 40 : 60} />
+        </div>
+        <div className="absolute bottom-0 left-0 text-[#d8c38d] opacity-10 transform rotate-180">
+          <Scroll size={isMobile ? 40 : 60} />
+        </div>
+        
+        <DialogHeader className="relative z-10">
+          <DialogTitle className="text-[#8b7339] font-serif flex items-center">
+            <BookOpen size={18} className="mr-2" />
             {selectedSkill?.name ? `${selectedSkill.name} bearbeiten` : "Neue Fähigkeit"}
           </DialogTitle>
         </DialogHeader>
         
-        <div className={`grid gap-3 py-2 ${isMobile ? 'text-sm' : ''}`}>
-          <div className="grid grid-cols-1 gap-3">
-            <div className="flex flex-col space-y-1">
-              <label className="font-medium text-[#6b592b]">Name</label>
+        <div className={`grid gap-3 py-2 ${isMobile ? 'text-sm' : ''} relative z-10`}>
+          <div className="space-y-3">
+            <div className="space-y-1">
+              <label className="font-medium text-[#6b592b] flex items-center text-sm">
+                <Feather size={14} className="mr-1" /> Name
+              </label>
               <Input
                 value={editValues.name}
                 onChange={(e) => setEditValues({ ...editValues, name: e.target.value })}
-                className="bg-[#fff] border-[#d8c38d] text-[#4e3c10]"
+                className="bg-[#fff] border-[#d8c38d] text-[#4e3c10] h-8"
+                placeholder="Fähigkeitsname"
               />
             </div>
             
-            <div className="flex flex-col space-y-1">
-              <label className="font-medium text-[#6b592b]">Spielwert</label>
+            <div className="space-y-1">
+              <label className="font-medium text-[#6b592b] flex items-center text-sm">
+                Grundwert
+              </label>
               <Select 
                 value={editValues.spielwert}
                 onValueChange={(value) => setEditValues({ ...editValues, spielwert: value })}
               >
-                <SelectTrigger className={`bg-[#fff] border-[#d8c38d] text-[#4e3c10] ${isMobile ? 'h-8 text-sm' : ''}`}>
-                  <SelectValue placeholder="Wähle einen Spielwert" />
+                <SelectTrigger className="bg-[#fff] border-[#d8c38d] text-[#4e3c10] h-8">
+                  <SelectValue placeholder="Attribut wählen" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#f5e8c8] border-[#d8c38d] text-[#4e3c10] max-h-[40vh]">
+                <SelectContent 
+                  className="bg-[#f5e8c8] border-[#d8c38d] text-[#4e3c10]"
+                  position="popper"
+                  sideOffset={5}
+                >
                   {getCharacterStatOptions(stats).map(option => (
                     <SelectItem 
                       key={option.value} 
                       value={option.value}
-                      className={`text-[#4e3c10] focus:bg-[#e2cc9c] focus:text-[#4e3c10] ${isMobile ? 'text-sm py-1' : ''}`}
+                      className="text-[#4e3c10] focus:bg-[#e2cc9c] focus:text-[#4e3c10] h-8 text-sm"
                     >
                       {option.label}
                     </SelectItem>
@@ -85,19 +104,24 @@ export function SkillEditDialog({
               </Select>
             </div>
             
-            <div className="flex flex-col space-y-1">
-              <label className="font-medium text-[#6b592b]">Steigerung</label>
+            <div className="space-y-1">
+              <label className="font-medium text-[#6b592b] flex items-center text-sm">
+                Steigerung
+              </label>
               <Input
                 type="number"
+                min="0"
                 value={editValues.steigerung}
                 onChange={(e) => setEditValues({ ...editValues, steigerung: Number(e.target.value) })}
-                className="bg-[#fff] border-[#d8c38d] text-[#4e3c10]"
+                className="bg-[#fff] border-[#d8c38d] text-[#4e3c10] h-8"
               />
             </div>
             
-            <div className="flex flex-col space-y-1">
-              <label className="font-medium text-[#6b592b]">Wert (Spielwert + Steigerung)</label>
-              <div className="bg-[#e2cc9c] border border-[#d8c38d] text-[#4e3c10] rounded-md px-3 py-1 flex items-center justify-center font-bold">
+            <div className="space-y-1 pt-1">
+              <label className="font-medium text-[#6b592b] text-sm">
+                Gesamtwert
+              </label>
+              <div className="bg-[#3a3333] text-[#d4af37] rounded-md px-3 py-2 flex items-center justify-center font-bold text-xl">
                 {editValues.spielwert 
                   ? calculateWert({ spielwert: editValues.spielwert, steigerung: editValues.steigerung })
                   : "—"}
@@ -106,29 +130,30 @@ export function SkillEditDialog({
           </div>
         </div>
         
-        <DialogFooter className={`flex ${isMobile ? 'flex-col space-y-2' : 'justify-between'} mt-2`}>
+        <DialogFooter className={`flex ${isMobile ? 'flex-col gap-2' : 'flex-row justify-between'} mt-2 relative z-10`}>
           {selectedSkill && selectedSkill.name && (
             <Button 
               onClick={onDelete}
-              size={isMobile ? "sm" : "default"}
-              className="bg-[#8b3939] hover:bg-[#722e2e] text-[#f5e8c8]"
+              size="sm"
+              variant="destructive"
+              className="bg-[#8b3939] hover:bg-[#722e2e] text-[#f5e8c8] h-8"
             >
-              Löschen
+              <Trash2 size={14} className="mr-1" /> Löschen
             </Button>
           )}
           
-          <div className={`flex ${isMobile ? 'justify-end space-x-2 w-full' : 'space-x-2'}`}>
+          <div className={`flex ${isMobile ? 'w-full justify-end space-x-2' : 'space-x-2'}`}>
             <Button 
               onClick={() => onOpenChange(false)}
-              size={isMobile ? "sm" : "default"}
-              className="bg-[#6b592b] hover:bg-[#4e3c10] text-[#f5e8c8]"
+              size="sm"
+              className="bg-[#6b592b] hover:bg-[#4e3c10] text-[#f5e8c8] h-8"
             >
               Abbrechen
             </Button>
             <Button 
               onClick={onSave}
-              size={isMobile ? "sm" : "default"}
-              className="bg-[#8b7339] hover:bg-[#6b592b] text-[#f5e8c8]"
+              size="sm"
+              className="bg-[#8b7339] hover:bg-[#6b592b] text-[#f5e8c8] h-8"
             >
               Speichern
             </Button>
