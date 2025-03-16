@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import type { Skill } from "@/context/CharacterContext";
 import { Stat } from "@/components/CharacterStats";
+import { ScrollText } from "lucide-react";
 
 interface SkillEditDialogProps {
   open: boolean;
@@ -41,9 +42,16 @@ export function SkillEditDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-[#262222] border-[#473b3b] text-[#e0d0b0]">
+      <DialogContent className="bg-[#f5e8c8] border-[#d8c38d] text-[#4e3c10] max-w-sm">
+        <div className="absolute -top-2 -left-2 text-[#8b7339] opacity-30">
+          <ScrollText size={24} />
+        </div>
+        <div className="absolute -bottom-2 -right-2 text-[#8b7339] opacity-30 transform rotate-180">
+          <ScrollText size={24} />
+        </div>
+        
         <DialogHeader>
-          <DialogTitle className="text-[#d4af37]">
+          <DialogTitle className="text-[#4e3c10] font-serif text-xl text-center">
             {selectedSkill?.name ? `${selectedSkill.name} bearbeiten` : "Neue Fähigkeit"}
           </DialogTitle>
         </DialogHeader>
@@ -51,29 +59,29 @@ export function SkillEditDialog({
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-1 gap-4">
             <div className="flex flex-col space-y-2">
-              <label className="text-sm text-[#c0b090]">Name</label>
+              <label className="text-sm text-[#6b592b] font-medium">Name</label>
               <Input
                 value={editValues.name}
                 onChange={(e) => setEditValues({ ...editValues, name: e.target.value })}
-                className="bg-[#332d2d] border-[#473b3b] text-[#e0d0b0]"
+                className="bg-[#f0ddb0] border-[#d0b978] text-[#4e3c10]"
               />
             </div>
             
             <div className="flex flex-col space-y-2">
-              <label className="text-sm text-[#c0b090]">Spielwert</label>
+              <label className="text-sm text-[#6b592b] font-medium">Spielwert</label>
               <Select 
                 value={editValues.spielwert}
                 onValueChange={(value) => setEditValues({ ...editValues, spielwert: value })}
               >
-                <SelectTrigger className="bg-[#332d2d] border-[#473b3b] text-[#e0d0b0]">
+                <SelectTrigger className="bg-[#f0ddb0] border-[#d0b978] text-[#4e3c10]">
                   <SelectValue placeholder="Wähle einen Spielwert" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#262222] border-[#473b3b] text-[#e0d0b0]">
+                <SelectContent className="bg-[#f5e8c8] border-[#d0b978] text-[#4e3c10]">
                   {getCharacterStatOptions(stats).map(option => (
                     <SelectItem 
                       key={option.value} 
                       value={option.value}
-                      className="text-[#e0d0b0] focus:bg-[#473b3b] focus:text-[#d4af37]"
+                      className="text-[#4e3c10] focus:bg-[#e2cc9c] focus:text-[#4e3c10]"
                     >
                       {option.label}
                     </SelectItem>
@@ -83,18 +91,18 @@ export function SkillEditDialog({
             </div>
             
             <div className="flex flex-col space-y-2">
-              <label className="text-sm text-[#c0b090]">Steigerung</label>
+              <label className="text-sm text-[#6b592b] font-medium">Steigerung</label>
               <Input
                 type="number"
                 value={editValues.steigerung}
                 onChange={(e) => setEditValues({ ...editValues, steigerung: Number(e.target.value) })}
-                className="bg-[#332d2d] border-[#473b3b] text-[#e0d0b0]"
+                className="bg-[#f0ddb0] border-[#d0b978] text-[#4e3c10]"
               />
             </div>
             
             <div className="flex flex-col space-y-2">
-              <label className="text-sm text-[#c0b090]">Wert (Spielwert + Steigerung)</label>
-              <div className="bg-[#332d2d] border border-[#473b3b] text-[#e0d0b0] rounded-md px-3 py-2 h-10">
+              <label className="text-sm text-[#6b592b] font-medium">Wert (Spielwert + Steigerung)</label>
+              <div className="bg-[#f0ddb0] border border-[#d0b978] text-[#4e3c10] rounded-md px-3 py-2 h-10 flex items-center font-medium">
                 {editValues.spielwert 
                   ? calculateWert({ spielwert: editValues.spielwert, steigerung: editValues.steigerung })
                   : "—"}
@@ -107,7 +115,7 @@ export function SkillEditDialog({
           {selectedSkill && selectedSkill.name && (
             <Button 
               onClick={onDelete}
-              className="bg-red-800 hover:bg-red-700 text-white"
+              className="bg-[#8b3939] hover:bg-[#6b2929] text-[#f5e8c8]"
             >
               Löschen
             </Button>
@@ -116,13 +124,14 @@ export function SkillEditDialog({
           <div className="flex space-x-2">
             <Button 
               onClick={() => onOpenChange(false)}
-              className="bg-[#332d2d] hover:bg-[#473b3b] text-[#e0d0b0]"
+              variant="outline"
+              className="border-[#d0b978] text-[#6b592b] hover:bg-[#e2cc9c] hover:text-[#4e3c10]"
             >
               Abbrechen
             </Button>
             <Button 
               onClick={onSave}
-              className="bg-[#d4af37] hover:bg-[#c09a20] text-[#262222]"
+              className="bg-[#8b7339] hover:bg-[#6b592b] text-[#f5e8c8]"
             >
               Speichern
             </Button>
