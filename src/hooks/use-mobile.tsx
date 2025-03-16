@@ -14,24 +14,11 @@ export function useIsMobile() {
     // Check immediately
     checkMobile()
     
-    // Add event listener for resize with debounce
-    let timeoutId: number | undefined;
-    const handleResize = () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-      timeoutId = window.setTimeout(checkMobile, 100);
-    };
-    
-    window.addEventListener("resize", handleResize)
+    // Add event listener for resize
+    window.addEventListener("resize", checkMobile)
     
     // Clean up
-    return () => {
-      window.removeEventListener("resize", handleResize)
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    }
+    return () => window.removeEventListener("resize", checkMobile)
   }, [])
 
   return !!isMobile

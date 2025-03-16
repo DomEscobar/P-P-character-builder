@@ -10,52 +10,52 @@ export function GroupSection() {
   const { group, updateGroup } = useCharacter();
 
   return (
-    <Card className="bg-card/70 backdrop-blur-md border-primary/20 shadow-lg">
+    <Card className="bg-[#332d2d] border-[#473b3b]">
       <CardHeader>
-        <CardTitle className="text-primary flex items-center">
+        <CardTitle className="text-[#d4af37] flex items-center">
           <Users size={18} className="mr-2" />
           Gruppe
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="gruppenname" className="text-muted-foreground">Gruppenname</Label>
+          <Label htmlFor="gruppenname" className="text-[#e0d0b0]">Gruppenname</Label>
           <Input
             id="gruppenname"
             value={group.name}
             onChange={(e) => updateGroup({ name: e.target.value })}
             placeholder="Name der Gruppe"
-            className="bg-secondary/40 border-primary/10 text-foreground"
+            className="bg-[#262222] border-[#473b3b] text-[#e0d0b0]"
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="kurzfristig_gruppe" className="text-muted-foreground">Kurzfristig</Label>
+          <Label htmlFor="kurzfristig_gruppe" className="text-[#e0d0b0]">Kurzfristig</Label>
           <Textarea
             id="kurzfristig_gruppe"
             value={group.kurzfristig}
             onChange={(e) => updateGroup({ kurzfristig: e.target.value })}
             placeholder="Kurzfristige Ziele der Gruppe..."
-            className="bg-secondary/40 border-primary/10 text-foreground min-h-[80px]"
+            className="bg-[#262222] border-[#473b3b] text-[#e0d0b0] min-h-[80px]"
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="langfristig_gruppe" className="text-muted-foreground">Langfristig</Label>
+          <Label htmlFor="langfristig_gruppe" className="text-[#e0d0b0]">Langfristig</Label>
           <Textarea
             id="langfristig_gruppe"
             value={group.langfristig}
             onChange={(e) => updateGroup({ langfristig: e.target.value })}
             placeholder="Langfristige Ziele der Gruppe..."
-            className="bg-secondary/40 border-primary/10 text-foreground min-h-[80px]"
+            className="bg-[#262222] border-[#473b3b] text-[#e0d0b0] min-h-[80px]"
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="mitglieder" className="text-muted-foreground">Mitglieder</Label>
+          <Label htmlFor="mitglieder" className="text-[#e0d0b0]">Mitglieder</Label>
           <Textarea
             id="mitglieder"
             value={group.mitglieder}
             onChange={(e) => updateGroup({ mitglieder: e.target.value })}
             placeholder="Namen und Details der Gruppenmitglieder..."
-            className="bg-secondary/40 border-primary/10 text-foreground min-h-[80px]"
+            className="bg-[#262222] border-[#473b3b] text-[#e0d0b0] min-h-[80px]"
           />
         </div>
       </CardContent>

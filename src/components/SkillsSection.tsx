@@ -67,12 +67,12 @@ export function SkillsSection() {
   };
 
   return (
-    <Card className="bg-card/70 backdrop-blur-md border-primary/20 shadow-lg">
+    <Card className="bg-[#332d2d] border-[#473b3b]">
       <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle className="text-primary text-center">Fähigkeiten</CardTitle>
+        <CardTitle className="text-[#d4af37] text-center">Fähigkeiten</CardTitle>
         <Button 
           onClick={handleAddSkill}
-          className="bg-primary/80 hover:bg-primary text-primary-foreground"
+          className="bg-[#403e43] hover:bg-[#53525a] text-[#d4af37]"
         >
           <Plus size={16} className="mr-1" /> Fähigkeit hinzufügen
         </Button>

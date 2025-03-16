@@ -41,9 +41,9 @@ export function SkillEditDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-card border-primary/20 text-foreground">
+      <DialogContent className="bg-[#262222] border-[#473b3b] text-[#e0d0b0]">
         <DialogHeader>
-          <DialogTitle className="text-primary">
+          <DialogTitle className="text-[#d4af37]">
             {selectedSkill?.name ? `${selectedSkill.name} bearbeiten` : "Neue Fähigkeit"}
           </DialogTitle>
         </DialogHeader>
@@ -51,29 +51,29 @@ export function SkillEditDialog({
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-1 gap-4">
             <div className="flex flex-col space-y-2">
-              <label className="text-sm text-muted-foreground">Name</label>
+              <label className="text-sm text-[#c0b090]">Name</label>
               <Input
                 value={editValues.name}
                 onChange={(e) => setEditValues({ ...editValues, name: e.target.value })}
-                className="bg-secondary/40 border-primary/10 text-foreground"
+                className="bg-[#332d2d] border-[#473b3b] text-[#e0d0b0]"
               />
             </div>
             
             <div className="flex flex-col space-y-2">
-              <label className="text-sm text-muted-foreground">Spielwert</label>
+              <label className="text-sm text-[#c0b090]">Spielwert</label>
               <Select 
                 value={editValues.spielwert}
                 onValueChange={(value) => setEditValues({ ...editValues, spielwert: value })}
               >
-                <SelectTrigger className="bg-secondary/40 border-primary/10 text-foreground">
+                <SelectTrigger className="bg-[#332d2d] border-[#473b3b] text-[#e0d0b0]">
                   <SelectValue placeholder="Wähle einen Spielwert" />
                 </SelectTrigger>
-                <SelectContent className="bg-card border-primary/20 text-foreground">
+                <SelectContent className="bg-[#262222] border-[#473b3b] text-[#e0d0b0]">
                   {getCharacterStatOptions(stats).map(option => (
                     <SelectItem 
                       key={option.value} 
                       value={option.value}
-                      className="text-foreground focus:bg-primary/20 focus:text-primary"
+                      className="text-[#e0d0b0] focus:bg-[#473b3b] focus:text-[#d4af37]"
                     >
                       {option.label}
                     </SelectItem>
@@ -83,18 +83,18 @@ export function SkillEditDialog({
             </div>
             
             <div className="flex flex-col space-y-2">
-              <label className="text-sm text-muted-foreground">Steigerung</label>
+              <label className="text-sm text-[#c0b090]">Steigerung</label>
               <Input
                 type="number"
                 value={editValues.steigerung}
                 onChange={(e) => setEditValues({ ...editValues, steigerung: Number(e.target.value) })}
-                className="bg-secondary/40 border-primary/10 text-foreground"
+                className="bg-[#332d2d] border-[#473b3b] text-[#e0d0b0]"
               />
             </div>
             
             <div className="flex flex-col space-y-2">
-              <label className="text-sm text-muted-foreground">Wert (Spielwert + Steigerung)</label>
-              <div className="bg-secondary/60 border border-primary/20 text-foreground rounded-md px-3 py-2 h-10">
+              <label className="text-sm text-[#c0b090]">Wert (Spielwert + Steigerung)</label>
+              <div className="bg-[#332d2d] border border-[#473b3b] text-[#e0d0b0] rounded-md px-3 py-2 h-10">
                 {editValues.spielwert 
                   ? calculateWert({ spielwert: editValues.spielwert, steigerung: editValues.steigerung })
                   : "—"}
@@ -107,7 +107,7 @@ export function SkillEditDialog({
           {selectedSkill && selectedSkill.name && (
             <Button 
               onClick={onDelete}
-              className="bg-destructive hover:bg-destructive/90 text-destructive-foreground"
+              className="bg-red-800 hover:bg-red-700 text-white"
             >
               Löschen
             </Button>
@@ -116,14 +116,13 @@ export function SkillEditDialog({
           <div className="flex space-x-2">
             <Button 
               onClick={() => onOpenChange(false)}
-              variant="outline"
-              className="border-primary/20 hover:bg-secondary/60 text-foreground"
+              className="bg-[#332d2d] hover:bg-[#473b3b] text-[#e0d0b0]"
             >
               Abbrechen
             </Button>
             <Button 
               onClick={onSave}
-              className="bg-primary hover:bg-primary/80 text-primary-foreground"
+              className="bg-[#d4af37] hover:bg-[#c09a20] text-[#262222]"
             >
               Speichern
             </Button>

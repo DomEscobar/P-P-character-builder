@@ -20,7 +20,7 @@ export function CharacterHeader() {
   return (
     <div className="space-y-3 md:space-y-4">
       <div className="flex justify-center mb-2 md:mb-4">
-        <div className="h-16 w-16 md:h-24 md:w-24 bg-secondary/50 rounded-full flex justify-center items-center border-2 border-primary/80 shadow-md shadow-primary/20 transition-transform hover:scale-105">
+        <div className="h-16 w-16 md:h-24 md:w-24 bg-[#3a3333] rounded-full flex justify-center items-center border-2 border-[#d4af37]">
           {profile.portrait ? (
             <img 
               src={profile.portrait} 
@@ -28,7 +28,7 @@ export function CharacterHeader() {
               className="h-full w-full object-cover rounded-full"
             />
           ) : (
-            <User className="h-8 w-8 md:h-12 md:w-12 text-primary/80" />
+            <User className="h-8 w-8 md:h-12 md:w-12 text-[#d4af37]" />
           )}
         </div>
       </div>
@@ -105,11 +105,11 @@ function CharacterInfoCard({
   const isMobile = useIsMobile();
   
   return (
-    <Card className="bg-card/60 backdrop-blur-sm border-secondary/40 shadow-lg">
+    <Card className="bg-[#332d2d] border-[#473b3b]">
       <CardContent className="p-2 md:p-4">
         <div className="flex items-center gap-1 md:gap-2 mb-1 md:mb-2">
-          <div className="text-primary/90">{icon}</div>
-          <Label htmlFor={name} className="text-primary/90 text-xs md:text-sm">{label}</Label>
+          {icon}
+          <Label htmlFor={name} className="text-[#d4af37] text-xs md:text-sm">{label}</Label>
         </div>
         <Input
           id={name}
@@ -117,7 +117,7 @@ function CharacterInfoCard({
           value={value}
           onChange={onChange}
           placeholder={placeholder}
-          className="bg-secondary/40 border-primary/10 text-foreground focus-visible:ring-primary/40 h-8 md:h-10 text-xs md:text-sm"
+          className="bg-[#262222] border-[#473b3b] text-[#e0d0b0] focus-visible:ring-[#d4af37] h-8 md:h-10 text-xs md:text-sm"
         />
       </CardContent>
     </Card>

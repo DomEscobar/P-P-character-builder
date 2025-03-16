@@ -13,36 +13,36 @@ export function TalentsSection() {
   };
 
   return (
-    <Card className="bg-card/70 backdrop-blur-md border-primary/20 shadow-lg">
+    <Card className="bg-[#332d2d] border-[#473b3b]">
       <CardHeader>
-        <CardTitle className="text-primary text-center">Talente</CardTitle>
+        <CardTitle className="text-[#d4af37] text-center">Talente</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {talents.map((talent, index) => (
           <div 
             key={talent.id} 
-            className="p-3 bg-secondary/40 backdrop-blur-sm rounded-md border border-primary/10 hover:border-primary/30 transition-colors shadow-sm"
+            className="p-3 bg-[#262222] rounded-md border border-[#473b3b]"
           >
             <div className="flex items-center gap-2 mb-2">
-              <Star size={16} className="text-yellow-400" />
+              <Star size={16} className="text-[#d4af37]" />
               <Input
                 value={talent.name}
                 onChange={(e) => handleTalentChange(index, 'name', e.target.value)}
                 placeholder="Talentname"
-                className="bg-secondary/20 border-primary/10 text-foreground h-8 flex-1"
+                className="bg-[#332d2d] border-[#473b3b] text-[#e0d0b0] h-8 flex-1"
               />
               <Input
                 value={talent.stufe}
                 onChange={(e) => handleTalentChange(index, 'stufe', e.target.value)}
                 placeholder="Stufe"
-                className="bg-secondary/20 border-primary/10 text-foreground h-8 w-20"
+                className="bg-[#332d2d] border-[#473b3b] text-[#e0d0b0] h-8 w-20"
               />
             </div>
             <Textarea
               value={talent.beschreibung}
               onChange={(e) => handleTalentChange(index, 'beschreibung', e.target.value)}
               placeholder="Beschreibung des Talents..."
-              className="bg-secondary/20 border-primary/10 text-foreground min-h-[60px]"
+              className="bg-[#332d2d] border-[#473b3b] text-[#e0d0b0] min-h-[60px]"
             />
           </div>
         ))}

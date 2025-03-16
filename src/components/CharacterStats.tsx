@@ -15,7 +15,6 @@ import {
   MessageCircle
 } from "lucide-react";
 import { useCharacter } from "@/context/CharacterContext";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 export type Stat = {
   name: string;
@@ -40,7 +39,6 @@ export const defaultStats: Stat[] = [
 
 export function CharacterStats() {
   const { stats, updateStat } = useCharacter();
-  const isMobile = useIsMobile();
 
   const [selectedStat, setSelectedStat] = useState<number | null>(null);
   const [openDialog, setOpenDialog] = useState(false);
@@ -66,13 +64,13 @@ export function CharacterStats() {
   };
 
   const calculateStrokeWidth = (value: number) => {
-    return value > 0 ? (isMobile ? 8 : 10) : (isMobile ? 4 : 5);
+    return value > 0 ? 10 : 5;
   };
 
   return (
-    <Card className="bg-card/70 backdrop-blur-md border-primary/20 shadow-lg">
+    <Card className="bg-[#332d2d] border-[#473b3b]">
       <CardHeader>
-        <CardTitle className="text-primary text-center">Spielwerte</CardTitle>
+        <CardTitle className="text-[#d4af37] text-center">Spielwerte</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
@@ -84,7 +82,7 @@ export function CharacterStats() {
                 className="flex flex-col items-center cursor-pointer transition-transform hover:scale-105"
                 onClick={() => handleStatClick(index)}
               >
-                <div className="relative flex items-center justify-center w-20 h-20 md:w-24 md:h-24 mb-2 group">
+                <div className="relative flex items-center justify-center w-24 h-24 mb-2">
                   {/* Background circle */}
                   <svg className="absolute" width="100%" height="100%" viewBox="0 0 100 100">
                     <circle
@@ -92,7 +90,7 @@ export function CharacterStats() {
                       cy="50"
                       r="40"
                       fill="none"
-                      stroke="rgba(255,255,255,0.1)"
+                      stroke="#3a3333"
                       strokeWidth="10"
                     />
                   </svg>
@@ -104,26 +102,21 @@ export function CharacterStats() {
                       cy="50"
                       r="40"
                       fill="none"
-                      stroke="rgba(59, 130, 246, 0.8)"
+                      stroke="#d4af37"
                       strokeWidth={calculateStrokeWidth(total)}
                       strokeDasharray={`${total > 0 ? (total / 100) * 251.2 : 0} 251.2`}
                       strokeLinecap="round"
                     />
                   </svg>
                   
-                  {/* Icon in the middle */}
-                  <div className="absolute opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-primary">
-                    {stat.icon}
-                  </div>
-                  
                   {/* Value in the middle */}
-                  <div className="z-10 text-2xl md:text-3xl font-bold text-white group-hover:opacity-0 transition-opacity duration-200">
+                  <div className="z-10 text-3xl font-bold text-white">
                     {total}
                   </div>
                 </div>
                 
-                <div className="flex items-center justify-center bg-secondary/60 px-3 py-1 rounded-full backdrop-blur-sm">
-                  <span className="text-xs md:text-sm font-medium text-primary/90">{stat.name}</span>
+                <div className="flex items-center justify-center bg-[#3a3333] px-4 py-1 rounded-full">
+                  <span className="text-sm font-medium text-[#d4af37]">{stat.name}</span>
                 </div>
               </div>
             );
@@ -131,9 +124,9 @@ export function CharacterStats() {
         </div>
 
         <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-          <DialogContent className="bg-card border-primary/20 text-foreground">
+          <DialogContent className="bg-[#262222] border-[#473b3b] text-[#e0d0b0]">
             <DialogHeader>
-              <DialogTitle className="text-primary">
+              <DialogTitle className="text-[#d4af37]">
                 {selectedStat !== null ? stats[selectedStat].name : "Stat"} bearbeiten
               </DialogTitle>
             </DialogHeader>
@@ -141,28 +134,28 @@ export function CharacterStats() {
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex flex-col space-y-2">
-                  <label className="text-sm text-muted-foreground">Basiswert</label>
+                  <label className="text-sm text-[#c0b090]">Basiswert</label>
                   <Input
                     type="number"
                     value={editValues.start}
                     onChange={(e) => setEditValues({ ...editValues, start: Number(e.target.value) })}
-                    className="bg-secondary/40 border-primary/20 text-foreground"
+                    className="bg-[#332d2d] border-[#473b3b] text-[#e0d0b0]"
                   />
                 </div>
                 <div className="flex flex-col space-y-2">
-                  <label className="text-sm text-muted-foreground">Steigerung</label>
+                  <label className="text-sm text-[#c0b090]">Steigerung</label>
                   <Input
                     type="number"
                     value={editValues.increase}
                     onChange={(e) => setEditValues({ ...editValues, increase: Number(e.target.value) })}
-                    className="bg-secondary/40 border-primary/20 text-foreground"
+                    className="bg-[#332d2d] border-[#473b3b] text-[#e0d0b0]"
                   />
                 </div>
               </div>
               
               <div className="flex justify-between items-center pt-2">
-                <div className="text-sm text-muted-foreground">
-                  Gesamtwert: <span className="text-primary font-bold">{editValues.start + editValues.increase}</span>
+                <div className="text-sm text-[#c0b090]">
+                  Gesamtwert: <span className="text-[#d4af37] font-bold">{editValues.start + editValues.increase}</span>
                 </div>
               </div>
             </div>
@@ -170,14 +163,13 @@ export function CharacterStats() {
             <DialogFooter>
               <Button 
                 onClick={() => setOpenDialog(false)}
-                variant="outline"
-                className="border-primary/20 hover:bg-secondary/60 text-foreground"
+                className="bg-[#332d2d] hover:bg-[#473b3b] text-[#e0d0b0]"
               >
                 Abbrechen
               </Button>
               <Button 
                 onClick={handleSaveStat}
-                className="bg-primary hover:bg-primary/80 text-primary-foreground"
+                className="bg-[#d4af37] hover:bg-[#c09a20] text-[#262222]"
               >
                 Speichern
               </Button>

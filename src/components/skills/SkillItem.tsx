@@ -20,13 +20,13 @@ export function SkillItem({ skill, wert, onEdit }: SkillItemProps) {
     return `${value > 0 ? (value / 100) * 251.2 : 0} 251.2`;
   };
 
-  const size = isMobile ? "w-16 h-16" : "w-20 h-20";
-  const fontSize = isMobile ? "text-xl" : "text-2xl";
+  const size = isMobile ? "w-16 h-16" : "w-24 h-24";
+  const fontSize = isMobile ? "text-xl" : "text-3xl";
   const labelSize = isMobile ? "text-xs" : "text-sm";
 
   return (
     <div 
-      className="flex flex-col items-center cursor-pointer transition-transform hover:scale-105 group"
+      className="flex flex-col items-center cursor-pointer transition-transform hover:scale-105"
       onClick={() => onEdit(skill)}
     >
       <div className={`relative flex items-center justify-center ${size} mb-1 md:mb-2`}>
@@ -36,7 +36,7 @@ export function SkillItem({ skill, wert, onEdit }: SkillItemProps) {
             cy="50"
             r="40"
             fill="none"
-            stroke="rgba(255,255,255,0.1)"
+            stroke="#3a3333"
             strokeWidth={isMobile ? "8" : "10"}
           />
         </svg>
@@ -47,7 +47,7 @@ export function SkillItem({ skill, wert, onEdit }: SkillItemProps) {
             cy="50"
             r="40"
             fill="none"
-            stroke="rgba(59, 130, 246, 0.8)"
+            stroke="#d4af37"
             strokeWidth={calculateStrokeWidth(wert)}
             strokeDasharray={getStrokeDashArray(wert)}
             strokeLinecap="round"
@@ -59,8 +59,8 @@ export function SkillItem({ skill, wert, onEdit }: SkillItemProps) {
         </div>
       </div>
       
-      <div className="flex items-center justify-center bg-secondary/60 backdrop-blur-sm px-2 py-0.5 md:px-3 md:py-1 rounded-full group-hover:bg-primary/60 transition-colors">
-        <span className={`${labelSize} font-medium text-foreground truncate max-w-full`}>
+      <div className="flex items-center justify-center bg-[#3a3333] px-2 py-0.5 md:px-4 md:py-1 rounded-full">
+        <span className={`${labelSize} font-medium text-[#d4af37] truncate max-w-full`}>
           {skill.name}
         </span>
       </div>
