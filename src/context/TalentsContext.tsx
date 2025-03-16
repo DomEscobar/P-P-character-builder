@@ -4,31 +4,51 @@ import { Talent } from "@/types/character";
 
 interface TalentsContextType {
   talents: Talent[];
-  updateTalent: (index: number, talent: Partial<Talent>) => void;
+  addTalent: (talent: Talent) => void;
+  updateTalent: (id: string, talent: Partial<Talent>) => void;
+  deleteTalent: (id: string) => void;
 }
 
 const TalentsContext = createContext<TalentsContextType | undefined>(undefined);
 
 export function TalentsProvider({ children }: { children: ReactNode }) {
-  // Talents state
-  const [talents, setTalents] = useState<Talent[]>(
-    Array(6).fill(null).map((_, index) => ({
-      id: `talent${index + 1}`,
+  // Talents state with initial values
+  const [talents, setTalents] = useState<Talent[]>([
+    {
+      id: "talent1",
       name: "",
       stufe: "",
       beschreibung: "",
-    }))
-  );
+    },
+    {
+      id: "talent2",
+      name: "",
+      stufe: "",
+      beschreibung: "",
+    },
+  ]);
   
-  // Talent update function
-  const updateTalent = (index: number, newTalent: Partial<Talent>) => {
-    const newTalents = [...talents];
-    newTalents[index] = { ...newTalents[index], ...newTalent };
-    setTalents(newTalents);
+  // Add a new talent
+  const addTalent = (talent: Talent) => {
+    setTalents([...talents, talent]);
+  };
+  
+  // Update existing talent
+  const updateTalent = (id: string, newTalentData: Partial<Talent>) => {
+    setTalents(prevTalents => 
+      prevTalents.map(talent => 
+        talent.id === id ? { ...talent, ...newTalentData } : talent
+      )
+    );
+  };
+  
+  // Delete a talent
+  const deleteTalent = (id: string) => {
+    setTalents(prevTalents => prevTalents.filter(talent => talent.id !== id));
   };
   
   return (
-    <TalentsContext.Provider value={{ talents, updateTalent }}>
+    <TalentsContext.Provider value={{ talents, addTalent, updateTalent, deleteTalent }}>
       {children}
     </TalentsContext.Provider>
   );
