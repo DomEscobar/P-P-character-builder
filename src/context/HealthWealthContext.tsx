@@ -5,6 +5,7 @@ interface HealthWealthData {
   health: {
     robustheit: number;
     lp: number;
+    maxLp: number; // Added maximum LP for health bar visualization
   };
   wealth: {
     gold: number;
@@ -23,7 +24,7 @@ const HealthWealthContext = createContext<HealthWealthContextType | undefined>(u
 
 export function HealthWealthProvider({ children }: { children: ReactNode }) {
   const [healthWealth, setHealthWealth] = useState<HealthWealthData>({
-    health: { robustheit: 0, lp: 0 },
+    health: { robustheit: 0, lp: 0, maxLp: 0 },
     wealth: { gold: 0, silber: 0, groschen: 0 }
   });
   
