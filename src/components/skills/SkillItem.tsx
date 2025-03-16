@@ -2,7 +2,6 @@
 import React from "react";
 import type { Skill } from "@/types/character";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Scroll } from "lucide-react";
 
 interface SkillItemProps {
   skill: Skill;
@@ -13,49 +12,58 @@ interface SkillItemProps {
 export function SkillItem({ skill, wert, onEdit }: SkillItemProps) {
   const isMobile = useIsMobile();
   
-  // Calculate visual elements based on wert value and device
-  const getProgressBarWidth = () => {
-    return `${Math.min(wert * 5, 100)}%`;
+  const calculateStrokeWidth = (value: number) => {
+    return value > 0 ? (isMobile ? 6 : 8) : (isMobile ? 3 : 4);
   };
-  
+
+  const getStrokeDashArray = (value: number) => {
+    return `${value > 0 ? (value / 100) * 251.2 : 0} 251.2`;
+  };
+
+  const size = isMobile ? "w-14 h-14" : "w-20 h-20";
+  const fontSize = isMobile ? "text-lg" : "text-2xl";
+  const labelSize = isMobile ? "text-xs" : "text-sm";
+
   return (
     <div 
-      className="relative cursor-pointer transition-all duration-300 hover:transform hover:scale-105"
+      className="flex flex-col items-center cursor-pointer transition-transform hover:scale-105 mb-2"
       onClick={() => onEdit(skill)}
     >
-      <div className="bg-[#f0ddb0] border-2 border-[#d8c38d] rounded-lg p-2 shadow-md relative overflow-hidden">
-        {/* Decorative corner scroll icon */}
-        <div className="absolute top-1 right-1 text-[#8b7339] opacity-30">
-          <Scroll size={isMobile ? 14 : 16} />
-        </div>
+      <div className={`relative flex items-center justify-center ${size} mb-1`}>
+        <svg className="absolute" width="100%" height="100%" viewBox="0 0 100 100">
+          <circle
+            cx="50"
+            cy="50"
+            r="40"
+            fill="none"
+            stroke="#3a3333"
+            strokeWidth={calculateStrokeWidth(0)}
+            opacity="0.6"
+          />
+        </svg>
         
-        {/* Skill name */}
-        <div className="font-serif text-[#6b592b] font-bold mb-1 truncate pr-5">
-          {skill.name}
-        </div>
+        <svg className="absolute transform -rotate-90" width="100%" height="100%" viewBox="0 0 100 100">
+          <circle
+            cx="50"
+            cy="50"
+            r="40"
+            fill="none"
+            stroke="#d4af37"
+            strokeWidth={calculateStrokeWidth(wert)}
+            strokeDasharray={getStrokeDashArray(wert)}
+            strokeLinecap="round"
+          />
+        </svg>
         
-        {/* Base attribute */}
-        <div className="flex items-center mb-2">
-          <div className="bg-[#8b7339] text-[#f5e8c8] rounded-md px-2 py-0.5 text-xs font-medium">
-            {skill.spielwert}
-          </div>
-          <div className="text-[#8b7339] text-xs ml-2">
-            +{skill.steigerung}
-          </div>
-        </div>
-        
-        {/* Progress bar */}
-        <div className="h-4 bg-[#e2cc9c] rounded-full overflow-hidden">
-          <div 
-            className="h-full bg-gradient-to-r from-[#d4af37] to-[#f0ca61] rounded-full transition-all duration-300"
-            style={{ width: getProgressBarWidth() }}
-          ></div>
-        </div>
-        
-        {/* Skill value */}
-        <div className="absolute bottom-2 right-2 bg-[#3a3333] text-[#d4af37] font-bold rounded-full w-6 h-6 flex items-center justify-center text-sm">
+        <div className={`z-10 ${fontSize} font-bold text-[#3a3333]`}>
           {wert}
         </div>
+      </div>
+      
+      <div className="bg-[#3a3333] px-2 py-0.5 rounded-full w-full max-w-[90%]">
+        <span className={`${labelSize} font-medium text-[#d4af37] truncate block text-center`}>
+          {skill.name}
+        </span>
       </div>
     </div>
   );
