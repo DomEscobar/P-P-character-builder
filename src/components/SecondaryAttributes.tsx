@@ -1,16 +1,14 @@
 
-import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import { Heart, Shield, Star, ArrowRight } from "lucide-react";
+import { useCharacter } from "@/context/CharacterContext";
 
 export function SecondaryAttributes() {
-  const [fate, setFate] = useState({ schicksal: 0, glueck: 0 });
-  const [toughness, setToughness] = useState({ zaehigkeit: 0, mut: 0, motivation: "" });
-  const [experience, setExperience] = useState({ aktuell: 0, ausgegeben: 0, gesamt: 0 });
-  const [movement, setMovement] = useState({ bewegung: 0, gehen: 0, rennen: 0 });
+  const { secondary, updateSecondary } = useCharacter();
+  const { fate, toughness, experience, movement } = secondary;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -29,7 +27,9 @@ export function SecondaryAttributes() {
                 id="schicksal"
                 type="number"
                 value={fate.schicksal}
-                onChange={(e) => setFate({ ...fate, schicksal: Number(e.target.value) })}
+                onChange={(e) => updateSecondary({ 
+                  fate: { ...fate, schicksal: Number(e.target.value) } 
+                })}
                 className="bg-[#262222] border-[#473b3b] text-[#e0d0b0] h-8"
               />
             </div>
@@ -39,7 +39,9 @@ export function SecondaryAttributes() {
                 id="glueck"
                 type="number"
                 value={fate.glueck}
-                onChange={(e) => setFate({ ...fate, glueck: Number(e.target.value) })}
+                onChange={(e) => updateSecondary({ 
+                  fate: { ...fate, glueck: Number(e.target.value) } 
+                })}
                 className="bg-[#262222] border-[#473b3b] text-[#e0d0b0] h-8"
               />
             </div>
@@ -49,7 +51,9 @@ export function SecondaryAttributes() {
                 id="zaehigkeit"
                 type="number"
                 value={toughness.zaehigkeit}
-                onChange={(e) => setToughness({ ...toughness, zaehigkeit: Number(e.target.value) })}
+                onChange={(e) => updateSecondary({ 
+                  toughness: { ...toughness, zaehigkeit: Number(e.target.value) } 
+                })}
                 className="bg-[#262222] border-[#473b3b] text-[#e0d0b0] h-8"
               />
             </div>
@@ -59,7 +63,9 @@ export function SecondaryAttributes() {
                 id="mut"
                 type="number"
                 value={toughness.mut}
-                onChange={(e) => setToughness({ ...toughness, mut: Number(e.target.value) })}
+                onChange={(e) => updateSecondary({ 
+                  toughness: { ...toughness, mut: Number(e.target.value) } 
+                })}
                 className="bg-[#262222] border-[#473b3b] text-[#e0d0b0] h-8"
               />
             </div>
@@ -69,7 +75,9 @@ export function SecondaryAttributes() {
             <Input
               id="motivation"
               value={toughness.motivation}
-              onChange={(e) => setToughness({ ...toughness, motivation: e.target.value })}
+              onChange={(e) => updateSecondary({ 
+                toughness: { ...toughness, motivation: e.target.value } 
+              })}
               className="bg-[#262222] border-[#473b3b] text-[#e0d0b0] h-8"
             />
           </div>
@@ -101,7 +109,9 @@ export function SecondaryAttributes() {
                 id="aktuell"
                 type="number"
                 value={experience.aktuell}
-                onChange={(e) => setExperience({ ...experience, aktuell: Number(e.target.value) })}
+                onChange={(e) => updateSecondary({ 
+                  experience: { ...experience, aktuell: Number(e.target.value) } 
+                })}
                 className="bg-[#262222] border-[#473b3b] text-[#e0d0b0] h-8"
               />
             </div>
@@ -111,7 +121,9 @@ export function SecondaryAttributes() {
                 id="ausgegeben"
                 type="number"
                 value={experience.ausgegeben}
-                onChange={(e) => setExperience({ ...experience, ausgegeben: Number(e.target.value) })}
+                onChange={(e) => updateSecondary({ 
+                  experience: { ...experience, ausgegeben: Number(e.target.value) } 
+                })}
                 className="bg-[#262222] border-[#473b3b] text-[#e0d0b0] h-8"
               />
             </div>
@@ -121,7 +133,9 @@ export function SecondaryAttributes() {
                 id="gesamt"
                 type="number"
                 value={experience.gesamt}
-                onChange={(e) => setExperience({ ...experience, gesamt: Number(e.target.value) })}
+                onChange={(e) => updateSecondary({ 
+                  experience: { ...experience, gesamt: Number(e.target.value) } 
+                })}
                 className="bg-[#262222] border-[#473b3b] text-[#e0d0b0] h-8"
               />
             </div>
@@ -138,7 +152,9 @@ export function SecondaryAttributes() {
                   id="bewegung"
                   type="number"
                   value={movement.bewegung}
-                  onChange={(e) => setMovement({ ...movement, bewegung: Number(e.target.value) })}
+                  onChange={(e) => updateSecondary({ 
+                    movement: { ...movement, bewegung: Number(e.target.value) } 
+                  })}
                   className="bg-[#262222] border-[#473b3b] text-[#e0d0b0] h-8"
                 />
               </div>
@@ -148,7 +164,9 @@ export function SecondaryAttributes() {
                   id="gehen"
                   type="number"
                   value={movement.gehen}
-                  onChange={(e) => setMovement({ ...movement, gehen: Number(e.target.value) })}
+                  onChange={(e) => updateSecondary({ 
+                    movement: { ...movement, gehen: Number(e.target.value) } 
+                  })}
                   className="bg-[#262222] border-[#473b3b] text-[#e0d0b0] h-8"
                 />
               </div>
@@ -158,7 +176,9 @@ export function SecondaryAttributes() {
                   id="rennen"
                   type="number"
                   value={movement.rennen}
-                  onChange={(e) => setMovement({ ...movement, rennen: Number(e.target.value) })}
+                  onChange={(e) => updateSecondary({ 
+                    movement: { ...movement, rennen: Number(e.target.value) } 
+                  })}
                   className="bg-[#262222] border-[#473b3b] text-[#e0d0b0] h-8"
                 />
               </div>

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
@@ -6,18 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus } from "lucide-react";
-import { defaultStats, Stat } from "./CharacterStats";
-
-type Skill = {
-  id: string;
-  name: string;
-  spielwert: string;
-  steigerung: number;
-};
+import { useCharacter } from "@/context/CharacterContext";
+import type { Skill } from "@/context/CharacterContext";
 
 // Get character stats to use in the dropdown
-const getCharacterStatOptions = () => {
-  return defaultStats.map(stat => ({
+const getCharacterStatOptions = (stats: any[]) => {
+  return stats.map(stat => ({
     value: stat.short,
     label: `${stat.name} (${stat.short})`,
     baseValue: stat.start
@@ -25,13 +18,7 @@ const getCharacterStatOptions = () => {
 };
 
 export function SkillsSection() {
-  const [skills, setSkills] = useState<Skill[]>([
-    { id: "1", name: "Anführen", spielwert: "CH", steigerung: 0 },
-    { id: "2", name: "Klettern", spielwert: "ST", steigerung: 0 },
-    { id: "3", name: "Orientierung", spielwert: "IN", steigerung: 0 },
-    { id: "4", name: "Reiten", spielwert: "GW", steigerung: 0 },
-    { id: "5", name: "Schleichen", spielwert: "GW", steigerung: 0 },
-  ]);
+  const { skills, addSkill, updateSkill, deleteSkill, stats } = useCharacter();
 
   const [selectedSkill, setSelectedSkill] = useState<Skill | null>(null);
   const [openDialog, setOpenDialog] = useState(false);
@@ -39,12 +26,12 @@ export function SkillsSection() {
 
   // Calculate the total value based on base value of spielwert + steigerung
   const calculateWert = (skill: Skill): number => {
-    const statOption = getCharacterStatOptions().find(option => option.value === skill.spielwert);
+    const statOption = getCharacterStatOptions(stats).find(option => option.value === skill.spielwert);
     return statOption ? statOption.baseValue + skill.steigerung : 0;
   };
 
   const handleAddSkill = () => {
-    const newId = `skill${skills.length + 1}`;
+    const newId = `skill${Date.now()}`;
     setSelectedSkill({ id: newId, name: "", spielwert: "", steigerung: 0 });
     setEditValues({ name: "", spielwert: "", steigerung: 0 });
     setOpenDialog(true);
@@ -62,33 +49,29 @@ export function SkillsSection() {
 
   const handleSaveSkill = () => {
     if (selectedSkill) {
-      const existingIndex = skills.findIndex(s => s.id === selectedSkill.id);
-      const updatedSkills = [...skills];
-      
-      const updatedSkill = {
-        ...selectedSkill,
-        name: editValues.name,
-        spielwert: editValues.spielwert,
-        steigerung: editValues.steigerung
-      };
-
-      if (existingIndex >= 0) {
+      if (skills.some(s => s.id === selectedSkill.id)) {
         // Update existing skill
-        updatedSkills[existingIndex] = updatedSkill;
+        updateSkill(selectedSkill.id, {
+          name: editValues.name,
+          spielwert: editValues.spielwert,
+          steigerung: editValues.steigerung
+        });
       } else {
         // Add new skill
-        updatedSkills.push(updatedSkill);
+        addSkill({
+          id: selectedSkill.id,
+          name: editValues.name,
+          spielwert: editValues.spielwert,
+          steigerung: editValues.steigerung
+        });
       }
-
-      setSkills(updatedSkills);
       setOpenDialog(false);
     }
   };
 
   const handleDeleteSkill = () => {
     if (selectedSkill) {
-      const updatedSkills = skills.filter(skill => skill.id !== selectedSkill.id);
-      setSkills(updatedSkills);
+      deleteSkill(selectedSkill.id);
       setOpenDialog(false);
     }
   };
@@ -123,7 +106,6 @@ export function SkillsSection() {
                 onClick={() => handleEditSkill(skill)}
               >
                 <div className="relative flex items-center justify-center w-24 h-24 mb-2">
-                  {/* Background circle */}
                   <svg className="absolute" width="100%" height="100%" viewBox="0 0 100 100">
                     <circle
                       cx="50"
@@ -135,7 +117,6 @@ export function SkillsSection() {
                     />
                   </svg>
                   
-                  {/* Progress circle */}
                   <svg className="absolute transform -rotate-90" width="100%" height="100%" viewBox="0 0 100 100">
                     <circle
                       cx="50"
@@ -149,7 +130,6 @@ export function SkillsSection() {
                     />
                   </svg>
                   
-                  {/* Value in the middle */}
                   <div className="z-10 text-3xl font-bold text-white">
                     {wert}
                   </div>
@@ -192,7 +172,7 @@ export function SkillsSection() {
                       <SelectValue placeholder="Wähle einen Spielwert" />
                     </SelectTrigger>
                     <SelectContent className="bg-[#262222] border-[#473b3b] text-[#e0d0b0]">
-                      {getCharacterStatOptions().map(option => (
+                      {getCharacterStatOptions(stats).map(option => (
                         <SelectItem 
                           key={option.value} 
                           value={option.value}
@@ -219,7 +199,7 @@ export function SkillsSection() {
                   <label className="text-sm text-[#c0b090]">Wert (Spielwert + Steigerung)</label>
                   <div className="bg-[#332d2d] border border-[#473b3b] text-[#e0d0b0] rounded-md px-3 py-2 h-10">
                     {editValues.spielwert 
-                      ? getCharacterStatOptions().find(option => option.value === editValues.spielwert)?.baseValue + editValues.steigerung 
+                      ? getCharacterStatOptions(stats).find(option => option.value === editValues.spielwert)?.baseValue + editValues.steigerung 
                       : "—"}
                   </div>
                 </div>
@@ -227,14 +207,14 @@ export function SkillsSection() {
             </div>
             
             <DialogFooter className="flex justify-between">
-              {selectedSkill?.id && selectedSkill.id.indexOf("skill") === 0 ? (
+              {selectedSkill && (
                 <Button 
                   onClick={handleDeleteSkill}
                   className="bg-red-800 hover:bg-red-700 text-white"
                 >
                   Löschen
                 </Button>
-              ) : <div></div>}
+              )}
               
               <div className="flex space-x-2">
                 <Button 

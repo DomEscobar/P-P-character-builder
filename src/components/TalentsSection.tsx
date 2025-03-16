@@ -1,31 +1,15 @@
 
-import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Star } from "lucide-react";
-
-type Talent = {
-  id: string;
-  name: string;
-  stufe: string;
-  beschreibung: string;
-};
+import { useCharacter } from "@/context/CharacterContext";
 
 export function TalentsSection() {
-  const [talents, setTalents] = useState<Talent[]>(
-    Array(6).fill(null).map((_, index) => ({
-      id: `talent${index + 1}`,
-      name: "",
-      stufe: "",
-      beschreibung: "",
-    }))
-  );
+  const { talents, updateTalent } = useCharacter();
 
-  const handleTalentChange = (index: number, field: keyof Talent, value: string) => {
-    const newTalents = [...talents];
-    newTalents[index][field] = value;
-    setTalents(newTalents);
+  const handleTalentChange = (index: number, field: string, value: string) => {
+    updateTalent(index, { [field]: value });
   };
 
   return (

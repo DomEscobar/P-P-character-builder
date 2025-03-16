@@ -1,23 +1,15 @@
-
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
 import { User, Scroll, Users, Sword } from "lucide-react";
+import { useCharacter } from "@/context/CharacterContext";
 
 export function CharacterHeader() {
-  const [character, setCharacter] = useState({
-    name: "",
-    volk: "",
-    klasse: "",
-    karriere: "",
-    portrait: null
-  });
+  const { profile, updateProfile } = useCharacter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCharacter({
-      ...character,
+    updateProfile({
       [e.target.name]: e.target.value
     });
   };
@@ -26,9 +18,9 @@ export function CharacterHeader() {
     <div className="space-y-4">
       <div className="flex justify-center mb-4">
         <div className="h-24 w-24 bg-[#3a3333] rounded-full flex justify-center items-center border-2 border-[#d4af37]">
-          {character.portrait ? (
+          {profile.portrait ? (
             <img 
-              src={character.portrait} 
+              src={profile.portrait} 
               alt="Character Portrait" 
               className="h-full w-full object-cover rounded-full"
             />
@@ -51,7 +43,7 @@ export function CharacterHeader() {
               icon={<User className="h-5 w-5" />}
               label="Name"
               name="name"
-              value={character.name}
+              value={profile.name}
               onChange={handleChange}
               placeholder="Character Name"
             />
@@ -61,7 +53,7 @@ export function CharacterHeader() {
               icon={<Users className="h-5 w-5" />}
               label="Volk"
               name="volk"
-              value={character.volk}
+              value={profile.volk}
               onChange={handleChange}
               placeholder="e.g. Human, Dwarf"
             />
@@ -71,7 +63,7 @@ export function CharacterHeader() {
               icon={<Sword className="h-5 w-5" />}
               label="Klasse"
               name="klasse"
-              value={character.klasse}
+              value={profile.klasse}
               onChange={handleChange}
               placeholder="e.g. Warrior, Mage"
             />
@@ -81,7 +73,7 @@ export function CharacterHeader() {
               icon={<Scroll className="h-5 w-5" />}
               label="Karriere"
               name="karriere"
-              value={character.karriere}
+              value={profile.karriere}
               onChange={handleChange}
               placeholder="e.g. Mercenary"
             />

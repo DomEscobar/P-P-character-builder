@@ -1,18 +1,13 @@
 
-import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Users } from "lucide-react";
+import { useCharacter } from "@/context/CharacterContext";
 
 export function GroupSection() {
-  const [group, setGroup] = useState({
-    name: "",
-    kurzfristig: "",
-    langfristig: "",
-    mitglieder: ""
-  });
+  const { group, updateGroup } = useCharacter();
 
   return (
     <Card className="bg-[#332d2d] border-[#473b3b]">
@@ -28,7 +23,7 @@ export function GroupSection() {
           <Input
             id="gruppenname"
             value={group.name}
-            onChange={(e) => setGroup({ ...group, name: e.target.value })}
+            onChange={(e) => updateGroup({ name: e.target.value })}
             placeholder="Name der Gruppe"
             className="bg-[#262222] border-[#473b3b] text-[#e0d0b0]"
           />
@@ -38,7 +33,7 @@ export function GroupSection() {
           <Textarea
             id="kurzfristig_gruppe"
             value={group.kurzfristig}
-            onChange={(e) => setGroup({ ...group, kurzfristig: e.target.value })}
+            onChange={(e) => updateGroup({ kurzfristig: e.target.value })}
             placeholder="Kurzfristige Ziele der Gruppe..."
             className="bg-[#262222] border-[#473b3b] text-[#e0d0b0] min-h-[80px]"
           />
@@ -48,7 +43,7 @@ export function GroupSection() {
           <Textarea
             id="langfristig_gruppe"
             value={group.langfristig}
-            onChange={(e) => setGroup({ ...group, langfristig: e.target.value })}
+            onChange={(e) => updateGroup({ langfristig: e.target.value })}
             placeholder="Langfristige Ziele der Gruppe..."
             className="bg-[#262222] border-[#473b3b] text-[#e0d0b0] min-h-[80px]"
           />
@@ -58,7 +53,7 @@ export function GroupSection() {
           <Textarea
             id="mitglieder"
             value={group.mitglieder}
-            onChange={(e) => setGroup({ ...group, mitglieder: e.target.value })}
+            onChange={(e) => updateGroup({ mitglieder: e.target.value })}
             placeholder="Namen und Details der Gruppenmitglieder..."
             className="bg-[#262222] border-[#473b3b] text-[#e0d0b0] min-h-[80px]"
           />

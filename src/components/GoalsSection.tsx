@@ -1,15 +1,12 @@
 
-import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Flag } from "lucide-react";
+import { useCharacter } from "@/context/CharacterContext";
 
 export function GoalsSection() {
-  const [goals, setGoals] = useState({
-    kurzfristig: "",
-    langfristig: ""
-  });
+  const { goals, updateGoals } = useCharacter();
 
   return (
     <Card className="bg-[#332d2d] border-[#473b3b]">
@@ -25,7 +22,7 @@ export function GoalsSection() {
           <Textarea
             id="kurzfristig"
             value={goals.kurzfristig}
-            onChange={(e) => setGoals({ ...goals, kurzfristig: e.target.value })}
+            onChange={(e) => updateGoals({ kurzfristig: e.target.value })}
             placeholder="Kurzfristige Ziele deines Charakters..."
             className="bg-[#262222] border-[#473b3b] text-[#e0d0b0] min-h-[80px]"
           />
@@ -35,7 +32,7 @@ export function GoalsSection() {
           <Textarea
             id="langfristig"
             value={goals.langfristig}
-            onChange={(e) => setGoals({ ...goals, langfristig: e.target.value })}
+            onChange={(e) => updateGoals({ langfristig: e.target.value })}
             placeholder="Langfristige Ziele deines Charakters..."
             className="bg-[#262222] border-[#473b3b] text-[#e0d0b0] min-h-[80px]"
           />

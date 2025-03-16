@@ -14,6 +14,7 @@ import {
   Compass, 
   MessageCircle
 } from "lucide-react";
+import { useCharacter } from "@/context/CharacterContext";
 
 export type Stat = {
   name: string;
@@ -37,7 +38,7 @@ export const defaultStats: Stat[] = [
 ];
 
 export function CharacterStats() {
-  const [stats, setStats] = useState<Stat[]>(defaultStats);
+  const { stats, updateStat } = useCharacter();
 
   const [selectedStat, setSelectedStat] = useState<number | null>(null);
   const [openDialog, setOpenDialog] = useState(false);
@@ -54,10 +55,10 @@ export function CharacterStats() {
 
   const handleSaveStat = () => {
     if (selectedStat !== null) {
-      const newStats = [...stats];
-      newStats[selectedStat].start = editValues.start;
-      newStats[selectedStat].increase = editValues.increase;
-      setStats(newStats);
+      updateStat(selectedStat, {
+        start: editValues.start,
+        increase: editValues.increase
+      });
       setOpenDialog(false);
     }
   };
