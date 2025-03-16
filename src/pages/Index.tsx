@@ -14,9 +14,9 @@ const Index = () => {
   const isMobile = useIsMobile();
   
   return (
-    <div className="min-h-screen bg-[#262222] text-[#e0d0b0] font-serif">
+    <div className="min-h-screen bg-background text-foreground font-serif bg-[url('/bg-texture.png')] bg-cover bg-fixed">
       <div className="container px-2 py-4 mx-auto max-w-3xl md:px-4 md:py-6">
-        <h1 className="text-2xl font-bold text-center mb-4 text-[#d4af37] md:text-3xl md:mb-6">
+        <h1 className="text-2xl font-bold text-center mb-4 text-primary md:text-3xl md:mb-6">
           Warhammer Fantasy Roleplay
         </h1>
         
@@ -24,17 +24,17 @@ const Index = () => {
         
         <div className="mt-4 md:mt-6">
           <Tabs defaultValue="stats" className="w-full">
-            <TabsList className="grid grid-cols-4 mb-4 md:mb-6 bg-[#332d2d]">
-              <TabsTrigger value="stats" className="text-[#d4af37] h-10">
+            <TabsList className="grid grid-cols-4 mb-4 md:mb-6 bg-card/60 backdrop-blur-sm">
+              <TabsTrigger value="stats" className="text-muted-foreground h-10 hover:text-primary-foreground data-[state=active]:bg-primary">
                 {isMobile ? <Activity size={18} /> : "Stats"}
               </TabsTrigger>
-              <TabsTrigger value="skills" className="text-[#d4af37] h-10">
+              <TabsTrigger value="skills" className="text-muted-foreground h-10 hover:text-primary-foreground">
                 {isMobile ? <Award size={18} /> : "Skills"}
               </TabsTrigger>
-              <TabsTrigger value="talents" className="text-[#d4af37] h-10">
+              <TabsTrigger value="talents" className="text-muted-foreground h-10 hover:text-primary-foreground">
                 {isMobile ? <Lightbulb size={18} /> : "Talents"}
               </TabsTrigger>
-              <TabsTrigger value="info" className="text-[#d4af37] h-10">
+              <TabsTrigger value="info" className="text-muted-foreground h-10 hover:text-primary-foreground">
                 {isMobile ? <FileText size={18} /> : "Info"}
               </TabsTrigger>
             </TabsList>
