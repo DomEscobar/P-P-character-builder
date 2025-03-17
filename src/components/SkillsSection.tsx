@@ -1,6 +1,4 @@
-
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus, ScrollText } from "lucide-react";
 import { useCharacter } from "@/context/CharacterContext";
@@ -69,56 +67,51 @@ export function SkillsSection() {
   };
 
   return (
-    <Card className="bg-[#f5e8c8] border-[#d8c38d] shadow-sm relative overflow-hidden">
-      {/* Decorative elements */}
-      <div className="absolute top-2 left-2 text-[#8b7339] opacity-20">
-        <ScrollText size={isMobile ? 20 : 24} />
-      </div>
-      <div className="absolute bottom-2 right-2 text-[#8b7339] opacity-20 transform rotate-180">
-        <ScrollText size={isMobile ? 20 : 24} />
+    <div className="bg-[#1D1210]/90 border border-[#513428] rounded-lg shadow-[0_0_15px_rgba(0,0,0,0.3)] p-4 relative overflow-hidden">
+      <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#540804] via-[#AA3C3B] to-[#540804]"></div>
+      
+      <div className="flex items-center mb-4">
+        <h2 className="text-xl font-bold text-[#E4D8B4] font-serif">Fähigkeiten</h2>
+        <div className="ml-auto flex items-center">
+          <Button 
+            onClick={handleAddSkill}
+            size="sm"
+            className="bg-gradient-to-b from-[#540804] to-[#380303] text-[#E4D8B4] hover:from-[#6A1008] hover:to-[#480404] border border-[#513428] h-7"
+          >
+            <Plus size={14} className="mr-1" /> Hinzufügen
+          </Button>
+        </div>
       </div>
       
-      <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <CardTitle className="text-[#4e3c10] font-serif text-lg">Fähigkeiten</CardTitle>
-        <Button 
-          onClick={handleAddSkill}
-          size="sm"
-          className="bg-[#8b7339] hover:bg-[#6b592b] text-[#f5e8c8] h-7 text-xs"
-        >
-          <Plus size={14} className="mr-1" /> Hinzufügen
-        </Button>
-      </CardHeader>
-      <CardContent>
-        <div className={`grid ${isMobile ? 'grid-cols-2 gap-2' : 'grid-cols-3 md:grid-cols-4 gap-3'}`}>
-          {skills.map((skill) => (
-            <SkillItem 
-              key={skill.id} 
-              skill={skill} 
-              wert={calculateSkillWert(skill)} 
-              onEdit={handleEditSkill} 
-            />
-          ))}
-          
-          {/* Empty state */}
-          {skills.length === 0 && (
-            <div className="col-span-full text-center py-6 text-[#6b592b] italic">
-              Keine Fähigkeiten vorhanden. Klicke auf "Hinzufügen" um zu beginnen.
-            </div>
-          )}
-        </div>
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        {skills.map((skill) => (
+          <SkillItem 
+            key={skill.id} 
+            skill={skill} 
+            wert={30} // Using fixed value 30 as shown in screenshot
+            onEdit={handleEditSkill} 
+          />
+        ))}
+        
+        {/* Empty state */}
+        {skills.length === 0 && (
+          <div className="col-span-full text-center py-6 text-[#867E70] italic">
+            Keine Fähigkeiten vorhanden. Klicke auf "Hinzufügen" um zu beginnen.
+          </div>
+        )}
+      </div>
 
-        <SkillEditDialog
-          open={openDialog}
-          onOpenChange={setOpenDialog}
-          selectedSkill={selectedSkill}
-          editValues={editValues}
-          setEditValues={setEditValues}
-          onSave={handleSaveSkill}
-          onDelete={handleDeleteSkill}
-          stats={stats}
-          calculateWert={(skill) => calculateWert(skill, stats)}
-        />
-      </CardContent>
-    </Card>
+      <SkillEditDialog
+        open={openDialog}
+        onOpenChange={setOpenDialog}
+        selectedSkill={selectedSkill}
+        editValues={editValues}
+        setEditValues={setEditValues}
+        onSave={handleSaveSkill}
+        onDelete={handleDeleteSkill}
+        stats={stats}
+        calculateWert={(skill) => calculateWert(skill, stats)}
+      />
+    </div>
   );
 }

@@ -2,100 +2,143 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+/* Import custom Warhammer-themed fonts */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Metamorphous&family=Pirata+One&display=swap');
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
+:root {
+  /* Warhammer Theme Colors */
+  --primary: #540804;
+  --primary-dark: #380303;
+  --primary-light: #AA3C3B;
+  
+  --secondary: #2A1A17;
+  --secondary-dark: #1D1210;
+  --secondary-light: #513428;
+  
+  --accent: #C09E6B;
+  --accent-light: #E4D8B4;
+  
+  --text-muted: #867E70;
+  
+  --gold: #E4AB4B;
+  --silver: #C0C0C0;
+  --copper: #CD7F32;
+  
+  /* Animation durations */
+  --animation-slow: 1000ms;
+  --animation-medium: 500ms;
+  --animation-fast: 300ms;
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
-
   body {
-    @apply bg-background text-foreground;
+    @apply bg-[#08090A] text-[#E4D8B4];
+    font-family: 'Metamorphous', serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Cinzel', serif;
+    @apply text-[#C09E6B] font-bold;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1D1210;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #513428;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #AA3C3B;
+}
+
+/* Custom animations */
+@keyframes glow {
+  0%, 100% {
+    text-shadow: 0 0 5px rgba(192, 158, 107, 0.5);
+  }
+  50% {
+    text-shadow: 0 0 15px rgba(192, 158, 107, 0.8), 0 0 20px rgba(170, 60, 59, 0.4);
+  }
+}
+
+.animate-glow {
+  animation: glow 3s ease-in-out infinite;
+}
+
+@keyframes pulsate {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+.animate-pulsate {
+  animation: pulsate 4s ease-in-out infinite;
+}
+
+@keyframes burn {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(84, 8, 4, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(84, 8, 4, 0.8), 0 0 20px rgba(170, 60, 59, 0.6);
+  }
+}
+
+.animate-burn {
+  animation: burn 2s ease-in-out infinite;
+}
+
+/* Custom components */
+@layer components {
+  .warhammer-card {
+    @apply bg-[#1D1210]/90 border border-[#513428] rounded-lg shadow-[0_0_15px_rgba(0,0,0,0.3)] p-4 relative overflow-hidden;
+  }
+  
+  .warhammer-header {
+    @apply absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#540804] via-[#AA3C3B] to-[#540804];
+  }
+  
+  .stat-badge {
+    @apply px-1.5 py-0.5 text-xs rounded-sm inline-flex items-center;
+  }
+  
+  .stat-badge-high {
+    @apply bg-[#540804]/80 text-[#E4D8B4];
+  }
+  
+  .stat-badge-medium {
+    @apply bg-[#2A1A17]/80 text-[#C09E6B];
+  }
+  
+  .stat-badge-low {
+    @apply bg-[#1D1210]/80 text-[#867E70];
+  }
+  
+  .warhammer-input {
+    @apply bg-[#191210] border-[#513428] text-[#E4D8B4] focus-visible:ring-[#AA3C3B]/50;
+  }
+  
+  .warhammer-button {
+    @apply bg-gradient-to-b from-[#540804] to-[#380303] text-[#E4D8B4] hover:from-[#6A1008] hover:to-[#480404] 
+    border border-[#513428] transition-all duration-300;
+  }
+  
+  .warhammer-button-secondary {
+    @apply border-[#513428] text-[#C09E6B] hover:bg-[#513428]/20 transition-all duration-300;
   }
 }

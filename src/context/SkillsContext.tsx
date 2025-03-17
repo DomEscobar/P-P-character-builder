@@ -1,6 +1,18 @@
-
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
 import { Skill } from "@/types/character";
+import { getFromLocalStorage, setToLocalStorage } from "@/utils/localStorage";
+
+// Local storage key
+const SKILLS_STORAGE_KEY = "fantasyCharacter_skills";
+
+// Default skills
+const defaultSkills: Skill[] = [
+  { id: "1", name: "Anführen", spielwert: "CH", steigerung: 0 },
+  { id: "2", name: "Klettern", spielwert: "ST", steigerung: 0 },
+  { id: "3", name: "Orientierung", spielwert: "IN", steigerung: 0 },
+  { id: "4", name: "Reiten", spielwert: "GW", steigerung: 0 },
+  { id: "5", name: "Schleichen", spielwert: "GW", steigerung: 0 },
+];
 
 interface SkillsContextType {
   skills: Skill[];
@@ -12,14 +24,15 @@ interface SkillsContextType {
 const SkillsContext = createContext<SkillsContextType | undefined>(undefined);
 
 export function SkillsProvider({ children }: { children: ReactNode }) {
-  // Skills state
-  const [skills, setSkills] = useState<Skill[]>([
-    { id: "1", name: "Anführen", spielwert: "CH", steigerung: 0 },
-    { id: "2", name: "Klettern", spielwert: "ST", steigerung: 0 },
-    { id: "3", name: "Orientierung", spielwert: "IN", steigerung: 0 },
-    { id: "4", name: "Reiten", spielwert: "GW", steigerung: 0 },
-    { id: "5", name: "Schleichen", spielwert: "GW", steigerung: 0 },
-  ]);
+  // Skills state - load from localStorage if available
+  const [skills, setSkills] = useState<Skill[]>(() => 
+    getFromLocalStorage<Skill[]>(SKILLS_STORAGE_KEY, defaultSkills)
+  );
+  
+  // Save to localStorage whenever skills change
+  useEffect(() => {
+    setToLocalStorage(SKILLS_STORAGE_KEY, skills);
+  }, [skills]);
   
   // Skill functions
   const addSkill = (skill: Skill) => {

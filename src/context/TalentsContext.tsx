@@ -1,6 +1,25 @@
-
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
 import { Talent } from "@/types/character";
+import { getFromLocalStorage, setToLocalStorage } from "@/utils/localStorage";
+
+// Local storage key
+const TALENTS_STORAGE_KEY = "fantasyCharacter_talents";
+
+// Default talents
+const defaultTalents: Talent[] = [
+  {
+    id: "talent1",
+    name: "",
+    stufe: "",
+    beschreibung: "",
+  },
+  {
+    id: "talent2",
+    name: "",
+    stufe: "",
+    beschreibung: "",
+  },
+];
 
 interface TalentsContextType {
   talents: Talent[];
@@ -12,21 +31,15 @@ interface TalentsContextType {
 const TalentsContext = createContext<TalentsContextType | undefined>(undefined);
 
 export function TalentsProvider({ children }: { children: ReactNode }) {
-  // Talents state with initial values
-  const [talents, setTalents] = useState<Talent[]>([
-    {
-      id: "talent1",
-      name: "",
-      stufe: "",
-      beschreibung: "",
-    },
-    {
-      id: "talent2",
-      name: "",
-      stufe: "",
-      beschreibung: "",
-    },
-  ]);
+  // Talents state - load from localStorage if available
+  const [talents, setTalents] = useState<Talent[]>(() => 
+    getFromLocalStorage<Talent[]>(TALENTS_STORAGE_KEY, defaultTalents)
+  );
+  
+  // Save to localStorage whenever talents change
+  useEffect(() => {
+    setToLocalStorage(TALENTS_STORAGE_KEY, talents);
+  }, [talents]);
   
   // Add a new talent
   const addTalent = (talent: Talent) => {

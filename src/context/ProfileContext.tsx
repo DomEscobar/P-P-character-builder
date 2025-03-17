@@ -1,6 +1,9 @@
-
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
 import { CharacterProfile } from "@/types/character";
+import { getFromLocalStorage, setToLocalStorage } from "@/utils/localStorage";
+
+// Local storage key
+const PROFILE_STORAGE_KEY = "fantasyCharacter_profile";
 
 interface ProfileContextType {
   profile: CharacterProfile;
@@ -10,14 +13,21 @@ interface ProfileContextType {
 const ProfileContext = createContext<ProfileContextType | undefined>(undefined);
 
 export function ProfileProvider({ children }: { children: ReactNode }) {
-  // Character profile state
-  const [profile, setProfile] = useState<CharacterProfile>({
-    name: "",
-    volk: "",
-    klasse: "",
-    karriere: "",
-    portrait: null,
-  });
+  // Character profile state - load from localStorage if available
+  const [profile, setProfile] = useState<CharacterProfile>(() => 
+    getFromLocalStorage<CharacterProfile>(PROFILE_STORAGE_KEY, {
+      name: "",
+      volk: "",
+      klasse: "",
+      karriere: "",
+      portrait: null,
+    })
+  );
+  
+  // Save to localStorage whenever profile changes
+  useEffect(() => {
+    setToLocalStorage(PROFILE_STORAGE_KEY, profile);
+  }, [profile]);
   
   // Profile update function
   const updateProfile = (newProfile: Partial<CharacterProfile>) => {
